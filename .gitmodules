@@ -22,7 +22,6 @@
 	path = content/weekly
 	url = https://github.com/pingcap/weekly.git
 	branch = website-preview
-	branch = hugo-refactor
 [submodule "content/tidb-academy"]
 	path = content/tidb-academy
-	url = git@github.com:pingcap/private-tidb-academy.git
+	url = https://github.com/pingcap/private-tidb-academy.git
