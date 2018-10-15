@@ -25,4 +25,3 @@
 [submodule "content/tidb-academy"]
 	path = content/tidb-academy
 	url = https://github.com/pingcap/private-tidb-academy.git
-  branch = master
