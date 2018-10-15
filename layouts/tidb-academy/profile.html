@@ -12,7 +12,7 @@
         <h1 class="profile__title">TiDB Academy Profile</h1>
 
         <form class="form" id="tidb-academy-form">
-          <div class="form__item">
+          <div class="form__item form__item-one">
             <label for="username">User Name</label>
               <input type="text" name="username" value="" id="p-username" disabled />
           </div>
@@ -20,15 +20,15 @@
             <label for="user-email">Email</label>
             <input type="user-email" name="user-email" id="user-email" value="" disabled />
           </div>
-          <div class="form__item form__item-three">
+          <div class="form__item form__item-three" style="display: none;">
             <label for="i-provider">Identify Provider</label>
             <input type="text" name="i-provider" id="i-provider" value="linked" disabled />
           </div>
-          <div class="form__item form__item-four">
+          <div class="form__item form__item-four" style="display: none;">
             <label for="pw">Password</label>
             <input type="password" name="pw" id="pw" value="123" disabled />
           </div>
-          <div class="form__submit">
+          <div class="form__submit" style="display: none;">
             <button class="submit-button">Change Password</button>
             <p class="tip">You’ll receive a confirmation link to change your password.</p>
           </div>
@@ -46,16 +46,19 @@
 <script type="text/javascript">
     if(localStorage) {
       var sub = localStorage.sub.split('|')[0]
+      // if user login using indentify provider
       if(sub != 'auth0') {
-          $('.form__item-two').css('display', 'none')
-          $('.form__submit').css('display', 'none')
-          $('.form__item-four').css('display', 'none')
-          $('.form__item-three').css('display','flex')
-          $('#i-provider').attr('value', sub)
-        }
-        $('#p-username').attr('value', localStorage.nickname)
-        $('#p-avatar').attr('src', localStorage.avatar)
+        $('.form__item-three').css('display','flex')
+        $('#i-provider').attr('value', sub)
+      } else {
+        $('.form__item-two').css('display', 'flex')
+        $('.form__submit').css('display', 'flex')
+        $('.form__item-four').css('display', 'flex')
         $('#user-email').attr('value', localStorage.email)
+      }
+      $('.form__item-one').css('display', 'flex')
+      $('#p-username').attr('value', localStorage.nickname)
+      $('#p-avatar').attr('src', localStorage.avatar)
     }
 </script>
 {{- end -}}
