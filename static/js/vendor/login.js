@@ -50,7 +50,6 @@ $('document').ready(function () {
       $('#j-username').text(localStorage.username)
       $('.j-avatar').attr('src', localStorage.avatar)
     })
-    console.log('expire at: ',expiresAt)
   }
 
   $('.submit-button').click(function(e) {
@@ -84,17 +83,11 @@ $('document').ready(function () {
 
   // parse access token and set sesstion
   function handleAuthentication() {
-    console.log('handle token')
     webAuth.parseHash(function (err, authenticationRes) {
       authResult = authenticationRes
       if (authResult && authResult.accessToken && authResult.idToken) {
-        console.log('authResult: ', authResult)
-        console.log('authResult.accessToken', authResult.accessToken)
-        console.log('authResult.idToken', authResult.idToken)
         window.location.hash = ''
-        debugger
         setSession();
-        // getUserProfile();
       } else if (err) {
         console.log('Error inside handleAuthentication', err)
         alert(
