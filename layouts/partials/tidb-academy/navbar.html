@@ -21,7 +21,6 @@
 {{- define "footJS" -}}
 <script type="text/javascript">
   if (localStorage) {
-    console.log("local sotrage hhhh----------")
     $('#j-username').text(localStorage.username)
     $('.j-avatar').attr('src', localStorage.avatar)
   }
