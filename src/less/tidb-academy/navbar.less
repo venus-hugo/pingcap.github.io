@@ -24,10 +24,23 @@
 }
 
 .navbar__item {
+  cursor: pointer;
   display: 'flex';
   align-items: center;
   color: #fff;
   font-size: 14px;
+
+  &:hover {
+    &::after {
+      content: " ";
+      background: @linkHoverColor;
+      height: 2px;
+      position: absolute;
+      left: 12px;
+      bottom: 0;
+      transition: all ease 0.4s;
+    }
+  }
 
   .avatar {
     border-radius: 50%;
@@ -54,7 +67,7 @@
 .dropdown {
   background-color: @darkBlue;
   transition: all 0.3s;
-  // display: none;
+  display: none;
 
   ul {
     display: flex;
@@ -62,6 +75,21 @@
     align-items: flex-end;
     padding: 0;
     list-style: none;
+
+    li a {
+
+      &:hover {
+          &:after {
+            width: 30%;
+          }
+        }
+
+      &.active {
+        &:after {
+          width: 90%;
+        }
+      }
+    }
   }
 }
 

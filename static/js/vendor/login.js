@@ -1,4 +1,5 @@
 $('document').ready(function () {
+
   var webAuth = new auth0.WebAuth({
     domain: AUTH0_DOMAIN,
     clientID: AUTH0_CLIENT_ID,
@@ -12,26 +13,19 @@ $('document').ready(function () {
 
   // proccess login
   $('#qsLoginBtn').click(function (e) {
-    console.log('bottom click login')
     e.preventDefault();
     webAuth.authorize();
   });
 
   $('#topLoginBtn').click(function (e) {
-      console.log('top click login')
       e.preventDefault();
       webAuth.authorize();
     });
 
   // process logout
   $('#qsLogoutBtn').click(function (e) {
-    console.log('inside logout click');
     e.preventDefault();
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('expires_at');
-    localStorage.removeItem('username')
-    localStorage.removeItem('avatar')
+    localStorage.clear()
     webAuth.logout({
       returnTo: AUTH0_LOGOUT_URL,
       client_id: AUTH0_CLIENT_ID
@@ -40,29 +34,46 @@ $('document').ready(function () {
 
   function setSession() {
     // Set the time that the access token will expire at
-    console.log('authResult: ', authResult.expiresIn * 1000)
     var expiresAt = JSON.stringify(
       authResult.expiresIn * 1000 + new Date().getTime()
     );
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
-    console.log('expire at: ',expiresAt)
-  }
-  
-  // get user profile and store in localStorage
-  function getUserProfile() {
     webAuth.client.userInfo(authResult.accessToken, function (err, profile) {
       userProfile = profile
-      console.log('userprofile:', userProfile)
+      localStorage.setItem('sub', userProfile.sub)
       localStorage.setItem('username', userProfile.name)
+      localStorage.setItem('nickname', userProfile.nickname)
       localStorage.setItem('avatar', userProfile.picture)
+      localStorage.setItem('email', userProfile.name)
+      $('#j-username').text(localStorage.username)
+      $('.j-avatar').attr('src', localStorage.avatar)
     })
+    console.log('expire at: ',expiresAt)
   }
-  
-  console.log('inside login.js')
-  $('#username').text(localStorage.username)
-  $('.j-avatar').attr('src', localStorage.avatar)
+
+  $('.submit-button').click(function(e) {
+    e.preventDefault()
+    $.ajax({
+      async: true,
+      acrossDomain: true,
+      url: "https://" + AUTH0_DOMAIN + "/dbconnections/change_password",
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      processData: false,
+      data: JSON.stringify({
+        client_id: AUTH0_CLIENT_ID,
+        email: localStorage.email,
+        connection: "Username-Password-Authentication"
+      })
+    }).done(function (response) {
+      $('.tip').text('Email Sent !')
+      $('.tip').css('color', '#4BB543')
+    });
+  })
 
   // Check whether the current time is past the
   // access token's expiry time
@@ -83,7 +94,7 @@ $('document').ready(function () {
         window.location.hash = ''
         debugger
         setSession();
-        getUserProfile();
+        // getUserProfile();
       } else if (err) {
         console.log('Error inside handleAuthentication', err)
         alert(
@@ -92,6 +103,18 @@ $('document').ready(function () {
       }
     });
   }
+
+  
+
+  $('.navbar__item').click(function(e) {
+    if ($('.dropdown').css('display') == 'none') {
+      $('.dropdown').css('display', 'block')
+      $('.dropdown').fadeIn()
+    } else {
+      $('.dropdown').css('display', 'none')
+      $('.dropdown').fadeOut()
+    }
+  })
 
   handleAuthentication();
 });

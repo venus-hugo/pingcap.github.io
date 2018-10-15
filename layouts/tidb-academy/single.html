@@ -26,27 +26,24 @@ localStorage.getItem('access_token')) {
 {{- partial "tidb-academy/navbar.html" -}}
 
 <div class="doc">  
-    <div class="container">
+<div class="container" style="padding-top: 114px;">
         {{- partial "archives/sticky-tree.html" (dict "tree" .Site.Data.tidb_academy_toc) -}}
         <div class="archive">
           <div class="content markdown-body">{{- .Content -}}</div>
-          <div class="article-toc"></div>
-          {{- partial "archives/git-info.html" (dict "repo" "private-tidb-academy" "global" .) -}}
-        </div>
-        <div class="sidebar-page">
-          <div class="sticky-sidebar">
-            {{- partial "archives/improve-doc.html" (dict "repo" "private-tidb-academy" "global" .) -}}
-            <p class="toc-title">What’s on this page</p>
-            <span id='username'></span>
-            <div id="smart_toc_wrapper"></div>
-          </div>
         </div>
     </div>
 </div>
 {{- end -}}
 {{- define "footJS" -}}
-    <script type="text/javascript" src="/js/doc.js"></script>
-    <script type="text/javascript" src="/js/vendor/login.js"></script>
     <script src="https://cdn.auth0.com/js/auth0/9.5.1/auth0.min.js"></script>
     <script type="text/javascript" src="/js/vendor/auth0-variables.js"></script>
+    <script type="text/javascript" src="/js/doc.js"></script>
+    <script type="text/javascript" src="/js/vendor/login.js"></script>
+    <script type="text/javascript">
+        if(localStorage.avatar) {
+            console.log('has localstorage avatar')
+            $('#j-username').text(localStorage.username)
+            $('.j-avatar').attr('src', localStorage.avatar)
+        }
+    </script>
 {{- end -}}
