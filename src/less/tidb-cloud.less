@@ -4,7 +4,7 @@
 // import partials
 @import "./hero.less";
 
-@tdColor: #394a7e;
+@tdColor: #172D72;
 
 .main {
   padding-top: @headerHeight;
@@ -25,7 +25,7 @@
 
 th {
   background: #5cc7fd;
-  padding: 0.5em 1em;
+  padding: 0.5em 0.8em;
   color: #fff;
   text-align: left;
   vertical-align: middle;
@@ -69,7 +69,7 @@ tr:last-child td:last-child {
 
 td {
   background: #fff;
-  padding: 0.5em 1em;
+  padding: 0.5em 0.8em;
   text-align: left;
   vertical-align: middle;
   font-weight: 400;
@@ -88,18 +88,18 @@ td {
   .icon-minus-mark::after {
     content: '';
     position: absolute;
-    width: 2em;
-    height: 4px;
+    width: 1.8em;
+    height: 3px;
     left: 50%;
     top: 50%;
-    margin-top: -2px;
-    margin-left: -1em;
+    margin-top: -1.5px;
+    margin-left: -0.9em;
     background: #394a7e;
   }
 }
 
 td.td-label {
-  width: 12em;
+  width: 12.6em;
   font-weight: 600;
   color: @tdColor;
 }
@@ -121,17 +121,16 @@ td:last-child {
     line-height: 2em;
     margin-right: 3em;
     padding: 0 1.5em;
-    border: none;
     border-radius: 1em;
     background-color: @themeBlue;
     font-size: 0.85em;
     color: #fff;
     text-transform: uppercase;
+    cursor: pointer;
     transition: all 0.3s;
 
     &:hover {
-      background-color: #fff;
-      color: @themeBlue;
+      background-color: @tdColor;
     }
   }
 }
