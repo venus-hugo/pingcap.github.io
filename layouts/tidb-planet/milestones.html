@@ -19,13 +19,24 @@
     {{- partial "head/preload-css" (dict "href" "/css/tidb-planet.css") -}}
 </head>
 
-<body>
+<body class="milestones-page">
     <div>
-        TiDB Milestones
         {{- partial "tidb-planet/nav" . -}}
-        <button class="button j-video-btn">show video</button>
         {{- partial "tidb-planet/modal" (dict "type" "video") -}}
+        {{- partial "tidb-planet/space" . -}}
+
+        <div class="tidb-planet">
+            <div class="element-player j-video-btn j-click"></div>
+            <div class="element-radar j-open-popup j-click">
+                <div class="popup popup-top popup-radar j-popup j-fadeOutSlowly">
+                    <div class="popup__content">
+                        <p>Watch the community milestone video here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    {{- partial "tidb-planet/arrow-link" (dict "pre" "/tidb-planet/village" "next" "/tidb-planet/become-a-contributor") -}}
     <script src="https://download.pingcap.com/js/jquery.min.js"></script>
     <script src='https://cdn.jsdelivr.net/g/lodash@4(lodash.min.js+lodash.fp.min.js)'></script>
     <script src="/js/tidb_planet.js"></script>

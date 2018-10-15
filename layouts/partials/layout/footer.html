@@ -8,6 +8,7 @@
                 <li><a href="/docs/">TiDB</a></li>
                 <li><a href="/docs/tispark/tispark-user-guide/">TiSpark</a></li>
                 <li><a href="/docs/ROADMAP/">Roadmap</a></li>
+                <li><a href="/tidb-cloud/">TiDB Cloud</a></li>
                 </ul>
             </div>
             <div class="flex-list">
@@ -26,6 +27,8 @@
                 <li><a href="/blog/">Blog</a></li>
                 <li><a href="/weekly/">Weekly</a></li>
                 <li><a href="https://github.com/pingcap" target="_blank">GitHub</a></li>
+                <li><a href="/tidb-academy/">TiDB Academy</a></li>
+                <li><a href="/community/">TiDB Community</a></li>
                 </ul>
             </div>
             <div class="flex-list">
@@ -35,6 +38,8 @@
                 <li><a href="https://angel.co/pingcap-1/jobs" target="_blank">Careers</a></li>
                 <li><a href="/news/">News</a></li>
                 <li><a href="/contact-us/">Contact Us</a></li>
+                <li><a href="/privacy-policy/">Privacy Policy</a></li>
+                <li><a href="/terms-of-service/">Terms of Service</a></li>
                 </ul>
             </div>
         </div>
@@ -52,8 +57,8 @@
             <div class="subscribe">{{ partial "common/mailchimp-js.html" . }}</div>
         </div>
     </div>
-    <div class="container">
+    <div class="container copyright-container">
         <p class="copyright">&copy; 2018 PingCAP. All Rights Reserved.</p>
-        <a href="{{ or $data_i18_link .Params.data_i18_page_link }}" class="btn-lang" id="lang">中文</a>
+        <a href="{{ or $data_i18_link .Params.data_i18_page_link }}" class="copyright-btn-lang" id="lang">中文</a>
     </div>
 </footer>

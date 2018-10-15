@@ -1,6 +1,10 @@
 @import "./variables.less";
 @import "./keyframes.less";
 
+.modal-overlay-transition {
+  transition: opacity @speed @easing, visibility @speed @easing;
+}
+
 /**
  * Overlay
  */
@@ -14,11 +18,11 @@
   width: 100%;
   height: 100%;
   z-index: 99999998;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
   visibility: hidden;
   backface-visibility: hidden;
-  transition: opacity @speed @easing, visibility @speed @easing;
+  // transition: opacity @speed @easing, visibility @speed @easing;
 
   .close-modal {
     position: absolute;
@@ -27,8 +31,8 @@
     right: 20px;
     opacity: 0;
     backface-visibility: hidden;
-    transition: opacity @speed @easing, transform @speed @easing;
-    transition-delay: @delay;
+    // transition: opacity @speed @easing, transform @speed @easing;
+    // transition-delay: @delay;
 
     svg {
       width: 2em;
@@ -45,7 +49,7 @@
       opacity: 1;
 
       svg {
-        fill: rgba(255, 255, 255, 0.5);
+        fill: rgba(255, 255, 255, 0.8);
       }
 
       &:hover {
@@ -67,38 +71,37 @@
   position: relative;
   margin: 0 auto;
   background-color: #fff;
-  // width: 90%;
-  // height: 80%;
   max-width: 960px;
   max-height: 80vh;
   border-radius: @borderRadius;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   opacity: 0;
-  overflow-y: auto;
+  overflow: hidden;
+  // overflow-y: auto;
   visibility: hidden;
   backface-visibility: hidden;
-  transform: scale(1.2);
+  // transform: scale(1.2);
   transition: all @speed @easing;
   z-index: 99999999;
-
-  .modal-content {
-    opacity: 0;
-    backface-visibility: hidden;
-    transition: opacity @speed @easing;
-    transition-delay: @delay;
-  }
 
   &.active {
     visibility: visible;
     opacity: 1;
-    transform: scale(1);
+    transform: none;
 
-    .modal-content {
+    .modal__content {
       opacity: 1;
       width: 100%;
       height: 100%;
     }
   }
+}
+
+.modal__content {
+  opacity: 0;
+  backface-visibility: hidden;
+  transition: opacity @speed @easing;
+  transition-delay: @delay;
 }
 
 // login modal
@@ -107,6 +110,7 @@
   height: 178px !important;
   padding: 43px 23px 16px;
   overflow: hidden;
+  transform: scale(1.2);
 
   .rocket {
     display: none;
@@ -126,7 +130,7 @@
     width: 227px;
     height: 34px;
     border-radius: @borderRadius;
-    text-align: center;
+    // text-align: center;
     font-size: 13px;
   }
 
@@ -156,14 +160,14 @@
       height: 100%;
       background: #fff;
       opacity: 0;
-      transform: scale(.2);
-      transition: all .25s ease-in;
+      transform: scale(0.2);
+      transition: all 0.25s ease-in;
     }
 
     &:hover::after {
       transform: scale(1);
-      opacity: .6;
-      transition: transform .25s ease-out;
+      opacity: 0.6;
+      transition: transform 0.25s ease-out;
     }
   }
 
@@ -180,11 +184,11 @@
     opacity: 0;
     visibility: hidden;
     transform: translateX(-50%);
-    transition: .3s linear;
+    transition: 0.3s linear;
     pointer-events: none;
 
     &::before {
-      content: '';
+      content: "";
       background-color: #323232;
       height: 250px;
       width: 250px;
@@ -195,7 +199,7 @@
       visibility: hidden;
       z-index: -1;
       transform: translate(-50%, -50%) scale(0.1);
-      transition: all .3s linear;
+      transition: all 0.3s linear;
     }
   }
 
@@ -207,14 +211,13 @@
     &::before {
       visibility: visible;
       transform: translate(-50%, -50%) scale(1);
-      transition: all .3s linear;
+      transition: all 0.3s linear;
     }
   }
 
   .link {
     padding-top: 12px;
     color: @lightBlue;
-    text-align: right;
     font-size: 13px;
     cursor: pointer;
 
@@ -240,6 +243,7 @@
   width: 90%;
   height: auto;
   background: transparent;
+  transform: scale(1.2);
 
   video {
     width: 100%;
@@ -247,26 +251,12 @@
   }
 }
 
-// contributors modal
-.modal-contributors {
-  width: 90%;
-  height: 80%;
-}
-
-// capture modal
-.modal-capture {
-  width: 80%;
-  height: auto;
-  overflow: hidden;
-  background: transparent;
-}
-
 /**
  * Mobile styling
  */
-@media only screen and (max-width: 40em) {
-  .modal {
-    -webkit-overflow-scrolling: touch;
+@media only screen and (max-width: 768px) {
+  .modal-login,
+  .modal-video {
     transform: scale(1.1);
   }
 

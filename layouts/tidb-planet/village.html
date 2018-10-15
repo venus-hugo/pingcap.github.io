@@ -17,16 +17,43 @@
     {{- partial "head/ga" . -}}
     {{- partial "head/meta-seo" . -}}
     {{- partial "head/preload-css" (dict "href" "/css/tidb-planet.css") -}}
+    {{- partial "head/preload-css" (dict "href" "/css/tidb-planet/contributor-list.css") -}}
+    <style>
+    .text-village {
+        position: absolute;
+        display: none;
+        width: 24em;
+        left: 50%;
+        top: -22em;
+        margin-left: -12em;
+        line-height: 1.5;
+        text-align: center;
+        animation-delay: 0.3s;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .text-village {
+            top: -14em;
+        }
+    }
+    </style>
 </head>
 
 <body>
-    <div>
-        <h1>TiDB Village</h1>
-        <h2>Contributors List</h2>
-        {{- partial "tidb-planet/nav" . -}}
-        <button class="button j-contributors-btn">show list</button>
-        {{- partial "tidb-planet/modal" (dict "type" "contributors" "global" .) -}}
+    {{- partial "tidb-planet/nav" . -}}
+    {{- partial "tidb-planet/space" . -}}
+    {{- partial "tidb-planet/modal" (dict "type" "contributors") -}}
+
+    <div class="tidb-planet">
+        <div class="text text-village scale-in-center j-show">Thanks to the community, we have <strong class="j-amount"></strong> contributors now. Check these names in the capsules below!</div>
+        <div class="element-dorm1 j-open-dorm j-click" data-index="0"></div>
+        <div class="element-dorm2 j-open-dorm j-click" data-index="1"></div>
+        <div class="element-dorm3 j-open-dorm j-click" data-index="2">
+        </div>
+        <div class="element-dorm4 j-open-dorm j-click" data-index="3"></div>
+        <div class="element-dorm5 j-open-dorm j-click" data-index="4"></div>
     </div>
+    {{- partial "tidb-planet/arrow-link" (dict "pre" "/tidb-planet/user" "next" "/tidb-planet/milestones") -}}
     <script src="https://download.pingcap.com/js/jquery.min.js"></script>
     <script src='https://cdn.jsdelivr.net/g/lodash@4(lodash.min.js+lodash.fp.min.js)'></script>
     <script src="/js/tidb_planet.js"></script>
