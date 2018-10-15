@@ -18,7 +18,7 @@ jobs:
 
     branches:
       only:
-        - preview
+        - src
 
     steps:
       - checkout
@@ -38,11 +38,10 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-      # generate contributors data
-      - run: export GITHUB_OAUTH_CLIENT_ID="${GITHUB_OAUTH_CLIENT_ID}";export GITHUB_OAUTH_CLIENT_SECRET="${GITHUB_OAUTH_CLIENT_SECRET}"
-      - run: node scripts/gen-contributors.js
-
+      - add_ssh_keys:
+          fingerprints:
+            - "1b:b6:ef:e0:fb:85:6d:8f:78:87:a6:ce:1f:34:ec:66"
+        
       - run: npm run build
 
       # notice netlify to deploy preview branch
@@ -52,7 +51,7 @@ jobs:
       - deploy:
           name: "Publish Website"
           command: |
-            if [ "${CIRCLE_BRANCH}" == "preview" ]; then
+            if [ "${CIRCLE_BRANCH}" == "src" ]; then
               ssh-keyscan "${DEPLOY_HOST}" >> ~/.ssh/known_hosts 2>/dev/null;
               rsync -avz --delete dist/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}" || true;
               ssh-keyscan "${DEPLOY_AWS_HOST}" >> ~/.ssh/known_hosts 2>/dev/null;
