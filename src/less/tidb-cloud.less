@@ -16,7 +16,7 @@
   background: white;
   border-radius: 12px;
   border-collapse: collapse;
-  margin: 3em auto;
+  margin: 3em auto 1em;
   max-width: 42em;
   width: 100%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
@@ -105,22 +105,36 @@ td.td-label {
 }
 
 td:last-child {
+  width: 20em;
   border-right: none;
 }
 
 .actions {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   width: 100%;
   max-width: 42em;
-  margin: 3em auto;
+  margin: 0 auto 3em;
+
+  div:first-child {
+    width: 12.6em;
+    font-size: 0.8em;
+  }
+
+  div:last-child {
+    width: 16em;
+  }
+
+  .column {
+    padding: 0.5em 0.8em;
+  }
 
   .actions__button {
+    display: block;
+    width: 6em;
     height: 2em;
     line-height: 2em;
-    margin-right: 3em;
-    padding: 0 1.5em;
+    text-align: center;
     border-radius: 1em;
     background-color: @themeBlue;
     font-size: 0.85em;
