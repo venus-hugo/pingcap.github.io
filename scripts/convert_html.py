@@ -10,6 +10,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 abs_hyper_link_pattern = re.compile(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}')
+image_rel_src_pattern = re.compile(r'^[\.\/]*media\/')
 
 with open(sys.argv[1], 'r') as f:
     soup = BeautifulSoup(f.read())
@@ -19,10 +20,21 @@ for link in soup.find_all('a'):
     if href:
         if (not abs_hyper_link_pattern.match(href)) and href.rfind('.md') > 0:
             href = href.replace('.md', '')
-            href = os.path.normpath(re.sub(r'^[\.\/]*', href, '/'))
-            href = os.path.normpath(os.path.join('/', sys.argv[2], href))
-        print (href)
+            href = re.sub(r'^[\.\/]*', '/', href, count=0, flags=0)
+            href = os.path.normpath('/' +  sys.argv[2] +href)
+        # print ('href',href)
         link['href'] = href
+
+for img in soup.find_all('img'):
+    src = img.get('src')
+    if src:
+        if not abs_hyper_link_pattern.match(src) and image_rel_src_pattern.match(src):
+            # print ('before re.sub', src)
+            src = re.sub(r'[\.\/]*media\/', '/', src, count=0, flags=0)
+            # print ('after re.sub', src)
+            src = os.path.normpath('/images/' + sys.argv[2] + src)
+        # print (src)
+        img['src'] = src
 
 # print (soup.prettify())
 # write html
