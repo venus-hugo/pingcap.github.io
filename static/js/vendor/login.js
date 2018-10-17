@@ -1,4 +1,4 @@
-$('document').ready(function () {
+$('document').ready(function() {
 
   var webAuth = new auth0.WebAuth({
     domain: AUTH0_DOMAIN,
@@ -11,21 +11,29 @@ $('document').ready(function () {
   var authResult
   var userProfile
 
-  // proccess login
-  $('#qsLoginBtn').click(function (e) {
+  // proccess top login button cick
+  $('#topLoginBtn').click(function(e) {
     e.preventDefault();
     webAuth.authorize();
   });
 
-  $('#topLoginBtn').click(function (e) {
+  // process bottom login button cick
+  $('#bottomLoginBtn').click(function(e) {
       e.preventDefault();
       webAuth.authorize();
     });
 
   // process logout
-  $('#qsLogoutBtn').click(function (e) {
+  $('#qsLogoutBtn').click(function(e) {
     e.preventDefault();
-    localStorage.clear()
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('expires_at');
+    localStorage.removeItem('sub')
+    localStorage.removeItem('username')
+    localStorage.removeItem('nickname')
+    localStorage.removeItem('avatar')
+    localStorage.removeItem('email')
     webAuth.logout({
       returnTo: AUTH0_LOGOUT_URL,
       client_id: AUTH0_CLIENT_ID
@@ -52,7 +60,7 @@ $('document').ready(function () {
     })
   }
 
-  $('.submit-button').click(function(e) {
+  $('.j-change-pw').click(function(e) {
     e.preventDefault()
     $.ajax({
       async: true,
@@ -67,11 +75,12 @@ $('document').ready(function () {
         client_id: AUTH0_CLIENT_ID,
         email: localStorage.email,
         connection: "Username-Password-Authentication"
-      })
-    }).done(function (response) {
-      $('.tip').text('Email Sent !')
-      $('.tip').css('color', '#4BB543')
-    });
+      }),
+      success: function(res) {
+        $('.profile-form').hide()
+        $('.emailsent').show()
+      }
+    })
   })
 
   // Check whether the current time is past the
@@ -96,8 +105,6 @@ $('document').ready(function () {
       }
     });
   }
-
-  
 
   $('.navbar__item').click(function(e) {
     if ($('.dropdown').css('display') == 'none') {
