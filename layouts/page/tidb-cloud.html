@@ -1,5 +1,5 @@
 {{- define "headTpl" -}}
-    {{$.Scratch.Set "data_i18_link" "/about-cn" }}
+    {{$.Scratch.Set "nav_active" "cloud"}}
     {{- partial "head/preload-css" (dict "href" "/css/tidb-cloud.css") -}}
 {{- end -}}
 
