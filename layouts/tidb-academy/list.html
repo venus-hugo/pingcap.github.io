@@ -14,7 +14,7 @@
 </style>
 
 <script>
-  // check if user has been logged in, if true, redirect to course page; 
+  // check if user has been logged in, if true, redirect to course page;
   // otherwise, stay at welcome page
     if(location.href.search('#access_token') == -1 && location.pathname == '/tidb-academy/' &&
       localStorage.getItem('access_token')) {
@@ -25,7 +25,7 @@
 {{- end -}}
 
 {{- define "main" -}}
-{{ $heading := "Welcome to TiDB Academy !" }}
+{{ $heading := "Welcome to TiDB Academy!" }}
 {{ $tips := "Please log in to view the courses." }}
 {{ $headinglogo := "/images/tidb-academy-logo.png" }}
 {{ $signinbnt := "Log In / Sign Up" }}
@@ -33,7 +33,7 @@
 {{- partial "layout/hero.html" (dict "heading" $heading "headinglogo" $headinglogo "signinbnt" $signinbnt "tips" $tips) -}}
   <div class="container" style="padding: 0 1rem; min-height: 600px;">
     <div id="tidb-intro-video" style="text-align: center; margin-top: 100px;">
-        <iframe src="https://player.vimeo.com/video/294639491" width="640" height="360" frameborder="0" webkitallowfullscreen
+        <iframe src="https://player.vimeo.com/video/294639491" width="640" style="max-width: 100%;" height="360" frameborder="0" webkitallowfullscreen
         mozallowfullscreen allowfullscreen></iframe>
     </div>
     <div style="text-align: center; margin-top: 50px;">
@@ -46,6 +46,7 @@
 {{- define "footJS" -}}
     <script src="https://cdn.auth0.com/js/auth0/9.5.1/auth0.min.js"></script>
     <script type="text/javascript" src="/js/vendor/auth0-variables.js"></script>
+    <script type="text/javascript" src="/js/vendor/lazyload.min.js"></script>
     <script type="text/javascript" src="/js/doc.js"></script>
     <script type="text/javascript" src="/js/vendor/login.js"></script>
 {{- end -}}

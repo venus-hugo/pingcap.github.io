@@ -110,6 +110,12 @@ $(document).ready(function() {
 
   // processLinksInMarkdown()
 
+  // process image: lazy load and add fade in effect
+  $('.lazy').lazyload({
+    threshold: 200,
+    effect: 'fadeIn',
+  })
+
   // Handle tags click: Filter tags on frontend
   $('.nav-tags .tag, .anchor-tag').click(function(e) {
     const $this = $(this)
