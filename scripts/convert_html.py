@@ -13,7 +13,7 @@ abs_hyper_link_pattern = re.compile(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{
 image_rel_src_pattern = re.compile(r'^[\.\/]*media\/')
 
 with open(sys.argv[1], 'r') as f:
-    soup = BeautifulSoup(f.read())
+    soup = BeautifulSoup(f.read(), 'lxml')
 
 for link in soup.find_all('a'):
     href = link.get('href')

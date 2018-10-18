@@ -44,7 +44,7 @@ replace_dist_html_link "dist/weekly" weekly
 
 
 parent_dir="`echo $(pwd) | sed 's;/scripts;;g'`/dist"
-copy_images_from_media_to_src() {
+copy_images_from_media_to_dist() {
   repo_name=$1
   media_path=$(echo $parent_dir/$repo_name/media)
   echo $media_path
@@ -52,10 +52,10 @@ copy_images_from_media_to_src() {
   [ -d $media_path ] && mv $media_path $parent_dir/images/$repo_name # cp -R
 }
 
-# mv all content in media to src/images
-copy_images_from_media_to_src docs
-copy_images_from_media_to_src docs-cn
-copy_images_from_media_to_src blog-cn
-copy_images_from_media_to_src blog
-copy_images_from_media_to_src weekly
-copy_images_from_media_to_src meetup
+# mv all content in media to dist/images
+copy_images_from_media_to_dist docs
+copy_images_from_media_to_dist docs-cn
+copy_images_from_media_to_dist blog-cn
+copy_images_from_media_to_dist blog
+copy_images_from_media_to_dist weekly
+copy_images_from_media_to_dist meetup
