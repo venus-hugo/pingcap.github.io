@@ -22,6 +22,6 @@
 	path = content/weekly
 	url = git@github.com:pingcap/pingcap/weekly.git
 	branch = website-preview
-# [submodule "content/tidb-academy"]
-# 	path = content/tidb-academy
-# 	url = git@github.com:pingcap/pingcap/private-tidb-academy.git
+[submodule "content/tidb-academy"]
+	path = content/tidb-academy
+	url = git@github.com:pingcap/pingcap/private-tidb-academy.git
