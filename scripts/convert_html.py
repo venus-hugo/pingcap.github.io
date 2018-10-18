@@ -21,7 +21,7 @@ for link in soup.find_all('a'):
         if (not abs_hyper_link_pattern.match(href)) and href.rfind('.md') > 0:
             href = href.replace('.md', '')
             href = re.sub(r'^[\.\/]*', '/', href, count=0, flags=0)
-            href = os.path.normpath('/' +  sys.argv[2] +href)
+            href = os.path.normpath('/' +  sys.argv[2] + href)
         # print ('href',href)
         link['href'] = href
 
@@ -34,7 +34,9 @@ for img in soup.find_all('img'):
             # print ('after re.sub', src)
             src = os.path.normpath('/images/' + sys.argv[2] + src)
         # print (src)
-        img['src'] = src
+        img['data-original']= src
+        img['src'] = '/images/svgs/loader-spinner.svg'
+        img['class'] = 'lazy'
 
 # print (soup.prettify())
 # write html

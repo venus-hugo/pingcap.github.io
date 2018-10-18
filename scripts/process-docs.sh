@@ -37,6 +37,7 @@ cn_tmp_blogs_path="dist/blog-cn"
 en_tmp_blogs_path="dist/blog"
 replace_dist_html_link "$cn_tmp_blogs_path" blog-cn
 replace_dist_html_link "$en_tmp_blogs_path" blog
+replace_dist_html_link "dist/success-stories" blog
 
 replace_dist_html_link "dist/meetup" meetup
 replace_dist_html_link "dist/weekly" weekly
