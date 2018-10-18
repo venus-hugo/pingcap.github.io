@@ -1,27 +1,27 @@
 [submodule "content/docs-cn"]
 	path = content/docs-cn
-	url = git@github.com:pingcap/pingcap/docs-cn.git
+	url = git@github.com:pingcap/docs-cn.git
 	branch = website-preview
 [submodule "content/docs"]
 	path = content/docs
-	url = git@github.com:pingcap/pingcap/docs.git
+	url = git@github.com:pingcap/docs.git
 	branch = website-preview
 [submodule "content/blog-cn"]
 	path = content/blog-cn
-	url = git@github.com:pingcap/pingcap/blog-cn.git
+	url = git@github.com:pingcap/blog-cn.git
     branch = website-preview
 [submodule "content/meetup"]
 	path = content/meetup
-	url = git@github.com:pingcap/pingcap/meetup.git
+	url = git@github.com:pingcap/meetup.git
 	branch = website-preview
 [submodule "content/blog"]
 	path = content/blog
-	url = git@github.com:pingcap/pingcap/blog.git
+	url = git@github.com:pingcap/blog.git
 	branch = website-preview
 [submodule "content/weekly"]
 	path = content/weekly
-	url = git@github.com:pingcap/pingcap/weekly.git
+	url = git@github.com:pingcap/weekly.git
 	branch = website-preview
 [submodule "content/tidb-academy"]
 	path = content/tidb-academy
-	url = git@github.com:pingcap/pingcap/private-tidb-academy.git
+	url = git@github.com:pingcap/private-tidb-academy.git
