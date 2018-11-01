@@ -1,3 +1,5 @@
+{{- define "title" -}} TiDB Cloud {{- end -}}
+
 {{- define "headTpl" -}}
     {{$.Scratch.Set "nav_active" "cloud"}}
     {{- partial "head/preload-css" (dict "href" "/css/tidb-cloud.css") -}}
@@ -19,13 +21,13 @@
                 <tbody>
                     <tr>
                         <td class="td-label">Available Platform</td>
-                        <td>Google Kubernetes Marketplace <br> (other marketplaces coming soon)</td>
-                        <td>Any public or private cloud platform</td>
+                        <td>GCP Marketplace <br> (other marketplaces coming soon)</td>
+                        <td>Any public or private cloud environment</td>
                     </tr>
                     <tr>
                         <td class="td-label">Pricing Scheme</td>
-                        <td>Pay per hour per container</td>
-                        <td>Pay per user: based on a combination of computing resources and storage capacity</td>
+                        <td>See Marketplace listing for more details</td>
+                        <td>Pay per usage: calculated based on a combination of computing resources and storage capacity</td>
                     </tr>
                     <tr>
                         <td class="td-label">Elastic Horizontal Scaling</td>
@@ -58,8 +60,8 @@
                         <td>99.99</td>
                     </tr>
                     <tr>
-                        <td class="td-label">PingCAP Expert Support SLA</td>
-                        <td>Please see Marketplace product listing for details</td>
+                        <td class="td-label">PingCAP Enterprise Support SLA</td>
+                        <td>See Marketplace listing for more details</td>
                         <td>24 hours response time; email + instant message + phone <br> (Support package with shorter response time available for additional cost)</td>
                     </tr>
                 </tbody>
@@ -68,7 +70,7 @@
             <div class="actions">
                 <div class="column"></div>
                 <div class="column" style="flex: 1;"><a class="actions__button" href="#">Sign Up</a></div>
-                <div class="column"><a class="actions__button" href="#">Sign Up</a></div>
+                <div class="column"><a class="actions__button" href="/tidb-cloud/sign-up/">Sign Up</a></div>
             </div>
         </div>
     </div>
