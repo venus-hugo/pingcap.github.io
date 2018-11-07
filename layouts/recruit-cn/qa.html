@@ -1,4 +1,7 @@
-{{- define "title" -}} Q &amp; A {{- end -}}
+{{- define "title" -}}
+    {{ $.Scratch.Set "metaTitle" "Q & A" }}
+    Q & A
+{{- end -}}
 
 {{- define "headTpl" -}}
     {{$.Scratch.Set "nav_active" "about"}}

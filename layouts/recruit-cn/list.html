@@ -1,4 +1,7 @@
-{{- define "title" -}} 招贤纳士 {{- end -}}
+{{- define "title" -}}
+    {{ $.Scratch.Set "metaTitle" "招贤纳士" }}
+    招贤纳士
+{{- end -}}
 
 {{- define "headTpl" -}}
     {{$.Scratch.Set "nav_active" "about"}}
