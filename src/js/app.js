@@ -157,6 +157,16 @@ function processMobileOverlay() {
   })
 }
 
+function tabCheckedInDocs() {
+  var contentTabID = $('input:checked').val()
+  $('#' + contentTabID).show()
+  $('input').on('click', function() {
+    $('section').hide()
+    var contentTabID = $('input:checked').val()
+    $('#' + contentTabID).show()
+  })
+}
+
 $(document).ready(function() {
   processHash()
 
@@ -173,6 +183,8 @@ $(document).ready(function() {
   toggleWeChatQRCode()
 
   processMobileOverlay()
+
+  tabCheckedInDocs()
 
   // Handle click event on Back to top button
   $('.back-to-top').click(function() {
