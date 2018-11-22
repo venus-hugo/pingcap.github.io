@@ -53,7 +53,6 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       inject: true,
-      chunks: ['app'],
       minify: {
         removeComments: true,
         collapseWhitespace: true,
