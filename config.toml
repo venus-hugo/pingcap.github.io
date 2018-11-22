@@ -7,6 +7,8 @@ disablePathToLower = true
 preserveTaxonomyNames = true
 pluralizeListTitles = true
 enableEmoji = true
+[blackfriday]
+  extensions = ["noEmptyLineBeforeBlock"]
 
 #Set to true to enable syntax highlighting in code fences with a language tag in markdown
 pygmentsCodefences = true
