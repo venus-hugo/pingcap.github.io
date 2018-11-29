@@ -1,0 +1,18 @@
+<div class="nav-tags" data-type="{{.type}}">
+    {{- range $name, $taxonomy := .global.Site.Taxonomies.categories -}}
+        <div class="category" data-tag="{{ replace $name " " "-"}}">
+            <a href="#{{ replace $name " " "-"}}" class="tag" data-tag="{{ replace $name " " "-"}}">
+                <div class="category__icon"></div>
+                <div class="category__content">
+                    <div class="title">
+                      {{- $name -}}
+                    </div>
+                    <div class="summary">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+                    </div>
+                </div>
+            </a>
+        </div>
+    {{end}}
+</div>

@@ -1,0 +1,24 @@
+<svg id="_025-programming" data-name="025-programming" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262.106 262.106">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #3a58f0;
+      }
+    </style>
+  </defs>
+  <g id="Group_45" data-name="Group 45" transform="translate(84.55 101.461)">
+    <path id="Path_11" data-name="Path 11" class="cls-1" d="M114.005,60l-10.383-3.458,4.9-9.787L92.251,30.487l-9.787,4.9L79.006,25H56L52.546,35.383l-9.787-4.9L26.492,46.755l4.9,9.787L21,60V83L31.383,86.46l-4.9,9.787,16.268,16.267,9.787-4.9L56,118.005H79l3.458-10.383,9.787,4.9,16.268-16.268-4.9-9.787,10.387-3.458ZM67.5,88.413A16.91,16.91,0,1,1,84.413,71.5,16.911,16.911,0,0,1,67.5,88.413Z" transform="translate(-21 -25)"/>
+  </g>
+  <g id="Group_46" data-name="Group 46" transform="translate(109.916 126.826)">
+    <path id="Path_12" data-name="Path 12" d="M48.138,73.275A21.138,21.138,0,1,1,69.275,52.138,21.162,21.162,0,0,1,48.138,73.275Zm0-33.82A12.683,12.683,0,1,0,60.82,52.138,12.7,12.7,0,0,0,48.138,39.455Z" transform="translate(-27 -31)"/>
+  </g>
+  <g id="Group_47" data-name="Group 47" transform="translate(0 0)">
+    <path id="Path_13" data-name="Path 13" d="M241.969,68.64H229.286V1H34.82V68.64H22.138A21.162,21.162,0,0,0,1,89.778V216.6a21.162,21.162,0,0,0,21.138,21.138H77.1v16.91H60.185v8.455H203.921v-8.455h-16.91v-16.91h54.958A21.162,21.162,0,0,0,263.106,216.6V89.778A21.162,21.162,0,0,0,241.969,68.64ZM220.831,9.455V34.82H43.275V9.455ZM22.138,77.1H34.82v76.1H85.55v-8.455H43.275V43.275H220.831V144.736H178.556v8.455h50.73V77.1h12.683a12.7,12.7,0,0,1,12.683,12.683V203.921H9.455V89.778A12.7,12.7,0,0,1,22.138,77.1ZM178.556,254.651H85.55v-16.91h93.005Zm63.413-25.365H22.138A12.7,12.7,0,0,1,9.455,216.6v-4.228h245.2V216.6A12.7,12.7,0,0,1,241.969,229.286Z" transform="translate(-1 -1)"/>
+    <rect id="Rectangle_76" data-name="Rectangle 76" width="8.455" height="8.455" transform="translate(50.73 16.91)"/>
+    <rect id="Rectangle_77" data-name="Rectangle 77" width="8.455" height="8.455" transform="translate(67.64 16.91)"/>
+    <rect id="Rectangle_78" data-name="Rectangle 78" width="8.455" height="8.455" transform="translate(84.55 16.91)"/>
+    <rect id="Rectangle_79" data-name="Rectangle 79" width="84.55" height="8.455" transform="translate(50.73 50.73)"/>
+    <rect id="Rectangle_80" data-name="Rectangle 80" width="84.55" height="8.455" transform="translate(50.73 67.64)"/>
+    <rect id="Rectangle_81" data-name="Rectangle 81" width="84.55" height="8.455" transform="translate(50.73 84.55)"/>
+  </g>
+</svg>
