@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
+<title>TiDB-Binlog Cluster 版本用户文档 | PingCAP</title>
+<script>
+window.ga =
+    window.ga ||
+    function() {
+        ;(ga.q = ga.q || []).push(arguments)
+    }
+ga.l = +new Date()
+ga('create', 'UA-99991864-4', 'auto')
+ga('send', 'pageview')
+</script>
+<script async="" src="https://download.pingcap.com/js/ga-analytics.js"></script>
+<link href="/images/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+<link href="/images/apple-touch-icon.png" rel="apple-touch-icon"/>
+<link href="https://www.pingcap.com/" rel="canonical"/>
+<meta content="PingCAP is focused on developing distributed NewSQL and is the team building TiDB, an open-source distributed NewSQL database." name="description"/>
+<meta content="noodp" name="robots"/>
+<meta content="SQL, HTAP, Open Source, Cloud-Native, NewSQL" name="keywords"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="website" property="og:type"/>
+<meta content="TiDB-Binlog Cluster 版本用户文档" property="og:title"/>
+<meta content="PingCAP is focused on developing distributed NewSQL and is the team building TiDB, an open-source distributed NewSQL database." property="og:description"/>
+<meta content="https://pingcap.com/docs-cn/tools/tidb-binlog-cluster/" property="og:url"/>
+<meta content="PingCAP" property="og:site_name"/>
+<meta content="https://pingcap.com/images/pingcap-opengraph.jpg" property="og:image"/>
+<meta content="https://pingcap.com/images/pingcap-opengraph.jpg" property="og:image:secure_url"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="PingCAP is focused on developing distributed NewSQL and is the team building TiDB, an open-source distributed NewSQL database." name="twitter:description"/>
+<meta content="TiDB-Binlog Cluster 版本用户文档" name="twitter:title"/>
+<meta content="@pingcap" name="twitter:site"/>
+<meta content="https://pingcap.com/images/pingcap-opengraph.jpg" name="twitter:image:src"/>
+<meta content="@pingcap" name="twitter:creator"/>
+<script async="async" src="//script.crazyegg.com/pages/scripts/0076/9903.js" type="text/javascript"></script>
+<script type="application/ld+json">
+{
+    "@context": "http:\/\/schema.org",
+    "@type": "WebSite",
+    "url": "https:\/\/www.pingcap.com\/",
+    "name": "PingCAP",
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https:\/\/www.pingcap.com\/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    }
+}
+</script>
+<link as="font" crossorigin="anonymous" href="https://download.pingcap.com/fonts/lato/lato-regular-webfont.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="anonymous" href="https://download.pingcap.com/fonts/lato/lato-regular-webfont.woff" rel="preload" type="font/woff"/>
+<link as="font" crossorigin="anonymous" href="https://download.pingcap.com/fonts/lato/lato-regular-webfont.ttf" rel="preload" type="font/ttf"/>
+<link as="font" crossorigin="anonymous" href="https://download.pingcap.com/fonts/titilliumweb/titilliumweb-regular-webfont.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="anonymous" href="https://download.pingcap.com/fonts/titilliumweb/titilliumweb-regular-webfont.woff" rel="preload" type="font/woff"/>
+<link as="font" crossorigin="anonymous" href="https://download.pingcap.com/fonts/titilliumweb/titilliumweb-regular-webfont.ttf" rel="preload" type="font/ttf"/>
+<link as="script" href="https://download.pingcap.com/js/jquery.min.js" rel="preload"/>
+<link href="/css/main.css" rel="stylesheet"/>
+<link href="https://download.pingcap.com/style/docsearch.min.css" rel="stylesheet"/>
+<style media="screen" type="text/css">
+        .st_tree {
+            display: none;
+        }
+    </style>
+<link href="https://download.pingcap.com/style/github-markdown.css" rel="stylesheet"/>
+<link href="/css/doc.css" rel="stylesheet"/>
+<script type="text/javascript">"/"===location.pathname&&"pingcap.github.io"===location.hostname&&(location.href="/en/")</script>
+<link as="script" href="/js/app.js" rel="preload"/>
+</head><body><style type="text/css">
+    .center-element {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+    }
+
+    #page-loader {
+        transform: translate(-50%, -50%) scale(0.6);
+        -webkit-transform: translate(-50%, -50%) scale(0.6);
+    }
+
+    #hexagon {
+        width: 60px;
+        height: auto;
+        overflow: visible;
+        background-color: transparent;
+    }
+
+    #hexagon #hexagon-base,
+    #hexagon #hexagon-line-animation {
+        fill: transparent;
+        stroke-miterlimit: 10;
+        stroke-width: 4px;
+    }
+
+    #hexagon #hexagon-base {
+        stroke: #cdd5e0;
+    }
+
+    #hexagon #hexagon-line-animation {
+        stroke: #3a59f0;
+        stroke-linecap: round;
+        animation: dash 1.5s linear;
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes dash {
+        0% {
+            stroke-dasharray: 260.22 173.48;
+            stroke-dashoffset: 0;
+        }
+        50% {
+            stroke-dasharray: 1 431.7;
+        }
+        100% {
+            stroke-dasharray: 260.22 173.48;
+            stroke-dashoffset: -867.4;
+        }
+    }
+</style>
+<div class="center-element" id="page-loader">
+<svg id="hexagon" viewbox="0 0 129.78 150.37" xmlns="http://www.w3.org/2000/svg">
+<path d="M-1665.43,90.94V35.83a15.09,15.09,0,0,1,6.78-12.59l48.22-31.83a15.09,15.09,0,0,1,16-.38L-1547,19.13a15.09,15.09,0,0,1,7.39,13V90.94a15.09,15.09,0,0,1-7.21,12.87l-47.8,29.24a15.09,15.09,0,0,1-15.75,0l-47.8-29.24A15.09,15.09,0,0,1-1665.43,90.94Z" id="hexagon-base" transform="translate(1667.43 13.09)"></path>
+<path d="M-1665.43,90.94V35.83a15.09,15.09,0,0,1,6.78-12.59l48.22-31.83a15.09,15.09,0,0,1,16-.38L-1547,19.13a15.09,15.09,0,0,1,7.39,13V90.94a15.09,15.09,0,0,1-7.21,12.87l-47.8,29.24a15.09,15.09,0,0,1-15.75,0l-47.8-29.24A15.09,15.09,0,0,1-1665.43,90.94Z" id="hexagon-line-animation" transform="translate(1667.43 13.09)"></path>
+</svg>
+</div>
+<div id="page-content" style="display:none">
+<header class="fixed-top" role="navigation">
+<div class="container">
+<a class="nav-brand" href="/index.html"><img alt="PingCAP" src="/images/pingcap-logo.png"/></a>
+<div class="nav-wrapper">
+<div class="navigation">
+<ul>
+<li class="sel"><a href="/docs-cn">文档</a></li>
+<li><a href="/cases-cn">案例</a></li>
+<li><a href="/blog-cn">博客</a></li>
+<li><a href="/about-cn">关于</a></li>
+<li><a class="link-download" href="/docs-cn/QUICKSTART/">下载</a></li>
+</ul>
+</div>
+<div class="global-search">
+<div class="search-wrapper">
+<span class="icon-search"><svg fill="#fff" height="18" viewbox="0 0 67.125 67.125" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M23.902 0C11.01 0 .523 10.488.523 23.38c0 12.891 10.487 23.379 23.379 23.379a23.258 23.258 0 0 0 14.471-5.037l24.816 24.817c.391.391.902.586 1.414.586s1.023-.195 1.414-.586a2 2 0 0 0 0-2.828L41.293 38.985c3.721-4.142 5.989-9.613 5.989-15.605C47.282 10.488 36.794 0 23.902 0zM4.523 23.38C4.523 12.694 13.216 4 23.902 4c10.687 0 19.38 8.694 19.38 19.38 0 5.396-2.221 10.279-5.791 13.795a1.959 1.959 0 0 0-.488.349 2.003 2.003 0 0 0-.271.343C33.31 40.9 28.825 42.76 23.903 42.76c-10.686-.001-19.38-8.695-19.38-19.38z"></path><path d="M24.075 8.591c-8.25 0-14.962 6.712-14.962 14.962a2 2 0 0 0 4 0c0-6.044 4.918-10.962 10.962-10.962a2 2 0 0 0 0-4z"></path></svg></span>
+<input data-lang="cn" id="search-input" placeholder="Search..." type="search"/>
+</div>
+</div>
+</div>
+<div class="nav-btn nav-slider">
+<i class="material-icons"><svg height="16" viewbox="0 0 459 459" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M0 382.5h459v-51H0v51zM0 255h459v-51H0v51zM0 76.5v51h459v-51H0z" fill="#FFF"></path></svg></i>
+</div>
+</div>
+</header>
+<nav class="mobile-sidebar">
+<div class="nav-header">
+<div class="logo-wrap">
+<a class="nav-brand" href="/en"><img alt="PingCAP" src="/images/pingcap-logo.png"/></a>
+</div>
+</div>
+<ul class="ul-base">
+<li class="sel"><a href="/docs-cn">文档</a></li>
+<li><a href="/cases-cn">案例</a></li>
+<li><a href="/blog-cn">博客</a></li>
+<li><a href="/about-cn">关于</a></li>
+<li><a class="link-download" href="/docs-cn/QUICKSTART/">下载</a></li>
+</ul>
+<div class="nav-footer">
+<div class="contact-list-wrap">
+<div class="flex-list">
+<h4 class="list-title"><strong>Contact</strong></h4>
+<ul class="social social-cn ul-base">
+<li><a class="twitter" href="https://twitter.com/PingCAP" target="_blank"><svg height="18" viewbox="0 0 612 612" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M612 116.258a250.714 250.714 0 0 1-72.088 19.772c25.929-15.527 45.777-40.155 55.184-69.411-24.322 14.379-51.169 24.82-79.775 30.48-22.907-24.437-55.49-39.658-91.63-39.658-69.334 0-125.551 56.217-125.551 125.513 0 9.828 1.109 19.427 3.251 28.606-104.326-5.24-196.835-55.223-258.75-131.174-10.823 18.51-16.98 40.078-16.98 63.101 0 43.559 22.181 81.993 55.835 104.479a125.556 125.556 0 0 1-56.867-15.756v1.568c0 60.806 43.291 111.554 100.693 123.104-10.517 2.83-21.607 4.398-33.08 4.398-8.107 0-15.947-.803-23.634-2.333 15.985 49.907 62.336 86.199 117.253 87.194-42.947 33.654-97.099 53.655-155.916 53.655-10.134 0-20.116-.612-29.944-1.721 55.567 35.681 121.536 56.485 192.438 56.485 230.948 0 357.188-191.291 357.188-357.188l-.421-16.253c24.666-17.593 46.005-39.697 62.794-64.861z"></path></svg></a></li>
+<li><a class="linkedin" href="https://www.linkedin.com/company/pingcap/" target="_blank"><svg height="18" viewbox="0 0 438.536 438.535" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M5.424 145.895H99.64v282.932H5.424zM408.842 171.739c-19.791-21.604-45.967-32.408-78.512-32.408-11.991 0-22.891 1.475-32.695 4.427-9.801 2.95-18.079 7.089-24.838 12.419-6.755 5.33-12.135 10.278-16.129 14.844-3.798 4.337-7.512 9.389-11.136 15.104v-40.232h-93.935l.288 13.706c.193 9.139.288 37.307.288 84.508 0 47.205-.19 108.777-.572 184.722h93.931V270.942c0-9.705 1.041-17.412 3.139-23.127 4-9.712 10.037-17.843 18.131-24.407 8.093-6.572 18.13-9.855 30.125-9.855 16.364 0 28.407 5.662 36.117 16.987 7.707 11.324 11.561 26.98 11.561 46.966V428.82h93.931V266.664c-.007-41.688-9.897-73.328-29.694-94.925zM53.103 9.708c-15.796 0-28.595 4.619-38.4 13.848C4.899 32.787 0 44.441 0 58.529 0 72.42 4.758 84.034 14.275 93.358c9.514 9.325 22.078 13.99 37.685 13.99h.571c15.99 0 28.887-4.661 38.688-13.99 9.801-9.324 14.606-20.934 14.417-34.829-.19-14.087-5.047-25.742-14.561-34.973C81.562 14.323 68.9 9.708 53.103 9.708z"></path></svg></a></li>
+<li><a class="reddit" href="https://www.reddit.com/r/TiDB/" target="_blank"><svg height="18" viewbox="0 0 279.748 279.748" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M279.748 133.142c0-19.299-15.701-35-35-35-10.768 0-20.674 4.812-27.279 13.064-18.532-8.431-39.663-13.626-62.015-15.271l19.206-60.692 42.895 9.294c3.285 12.782 14.901 22.258 28.693 22.258 16.336 0 29.627-13.29 29.627-29.626 0-16.336-13.291-29.627-29.627-29.627-11.801 0-21.999 6.941-26.759 16.95l-49.497-10.725a10.002 10.002 0 0 0-11.651 6.756L134.636 95.43c-26.164.638-50.988 6.053-72.356 15.775-6.606-8.251-16.512-13.063-27.28-13.063-19.299 0-35 15.701-35 35 0 9.373 3.683 18.173 10.222 24.709-3.9 8.37-5.875 17.076-5.875 25.936 0 24.048 14.396 46.492 40.538 63.199 25.447 16.264 59.183 25.221 94.989 25.221 35.808 0 69.542-8.957 94.989-25.221 26.142-16.707 40.538-39.151 40.538-63.199 0-8.859-1.975-17.565-5.875-25.936 6.539-6.537 10.222-15.336 10.222-24.709zM15.369 145.139c-2.212-3.59-3.369-7.688-3.369-11.997 0-12.682 10.317-23 23-23 5.444 0 10.558 1.851 14.649 5.258-14.622 8.302-26.132 18.289-34.28 29.739zm52.671 20.266c0-13.785 11.215-25 25-25s25 11.215 25 25-11.215 25-25 25-25-11.215-25-25zm123.119 57.054c-9.745 10.637-29.396 17.244-51.285 17.244-21.888 0-41.539-6.607-51.284-17.244a9.937 9.937 0 0 1-2.617-7.192 9.933 9.933 0 0 1 3.235-6.937 9.974 9.974 0 0 1 6.754-2.627c2.797 0 5.484 1.183 7.373 3.244 5.803 6.333 20.827 10.756 36.539 10.756s30.737-4.423 36.539-10.756a10.022 10.022 0 0 1 7.374-3.244c2.508 0 4.906.933 6.755 2.627a9.928 9.928 0 0 1 3.234 6.937 9.933 9.933 0 0 1-2.617 7.192zm-4.451-32.054c-13.785 0-25-11.215-25-25s11.215-25 25-25 25 11.215 25 25-11.215 25-25 25zm77.671-45.266c-8.147-11.45-19.657-21.436-34.28-29.739 4.092-3.408 9.205-5.258 14.649-5.258 12.683 0 23 10.318 23 23 0 4.309-1.157 8.407-3.369 11.997z"></path></svg></a></li>
+<li><a class="google-plus" href="https://groups.google.com/forum/#!forum/tidb-user" target="_blank"><svg height="18" viewbox="0 0 491.858 491.858" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M377.472 224.957H201.319v58.718H308.79c-16.032 51.048-63.714 88.077-120.055 88.077-69.492 0-125.823-56.335-125.823-125.824 0-69.492 56.333-125.823 125.823-125.823 34.994 0 66.645 14.289 89.452 37.346l42.622-46.328c-34.04-33.355-80.65-53.929-132.074-53.929C84.5 57.193 0 141.693 0 245.928s84.5 188.737 188.736 188.737c91.307 0 171.248-64.844 188.737-150.989v-58.718l-.001-.001zM491.858 224.857h-36.031v-36.031h-30.886v36.031H388.91v30.883h36.031v36.032h30.886V255.74h36.031z"></path></svg></a></li>
+<li><a class="stack-overflow" href="https://stackoverflow.com/questions/tagged/tidb" target="_blank"><svg height="18" viewbox="0 0 547.597 547.597" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M140.81 475.111h.024l189.91-.269c8.434-.013 15.3-6.886 15.3-15.318v-21.298c0-8.428-6.854-15.288-15.3-15.288l-189.91.264c-8.433.012-15.3 6.885-15.3 15.318v21.31c.001 8.427 6.855 15.281 15.276 15.281z"></path><path d="M58.667 517.854c.073 29.26.073 29.449 3.072 29.449h.055l10.612.294h.086s85.814 0 171.629-.036c42.914-.019 85.821-.05 118-.092 16.09-.019 29.505-.043 38.887-.074 17.803-.055 17.803-.055 17.803-3.072l.3-10.697V333.299c0-8.434-6.866-15.3-15.3-15.3h-11.909c-8.434 0-15.3 6.866-15.3 15.3V496.22c0 5.062-4.119 9.18-9.181 9.18H110.51c-5.061 0-9.18-4.118-9.18-9.18V333.299c0-8.434-6.867-15.3-15.3-15.3H73.82c-8.433 0-15.3 6.86-15.3 15.3 0 23.342.012 76.084.055 122.981.019 23.447.05 45.442.092 61.574z"></path><path d="M142.322 397.399l189.402 17.467c.478.043.948.062 1.413.062 7.956 0 14.468-5.985 15.159-13.917l1.83-21.096c.729-8.396-5.508-15.851-13.898-16.628l-189.102-17.461c-8.593-.795-15.869 5.441-16.653 13.825l-1.97 21.108a15.172 15.172 0 0 0 3.452 11.181 15.19 15.19 0 0 0 10.367 5.459zM437.636 208.849a15.253 15.253 0 0 0 17.694 12.443l21.065-3.678c8.311-1.451 13.898-9.395 12.454-17.706l-32.504-187.23c-1.42-8.207-9.21-13.917-17.692-12.448l-21.065 3.678c-8.311 1.451-13.898 9.395-12.454 17.705l32.502 187.236zM190.333 194.375l163.6 96.708a15.28 15.28 0 0 0 7.778 2.136c5.393 0 10.447-2.876 13.183-7.509l10.876-18.36c2.08-3.519 2.674-7.631 1.658-11.591a15.18 15.18 0 0 0-7.032-9.358l-163.6-96.714c-7.014-4.149-16.836-1.597-20.967 5.374l-10.869 18.36a15.2 15.2 0 0 0-1.658 11.591 15.21 15.21 0 0 0 7.031 9.363zM387.525 240.501a15.276 15.276 0 0 0 12.626 6.659c3.091 0 6.077-.924 8.635-2.681l17.405-11.934c6.953-4.768 8.752-14.314 4.015-21.292L323.29 54.104c-4.584-6.732-14.498-8.623-21.236-3.984l-17.737 12.21c-6.945 4.779-8.727 14.327-3.971 21.291l107.179 156.88zM154.482 302.319l183.465 49.156c1.298.349 2.632.526 3.966.526 6.903 0 12.98-4.67 14.762-11.347l5.508-20.624c2.179-8.152-2.681-16.555-10.826-18.74l-183.465-49.162c-8.017-2.148-16.604 2.852-18.728 10.826l-5.508 20.63c-2.179 8.142 2.68 16.551 10.826 18.735z"></path></svg></a></li>
+<li id="wechat-mobile"><a class="wechat" href="javascript:void(0)"><svg height="18" viewbox="0 0 31.403 31.404" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M31.403 21.306c0-4.597-4.388-8.32-9.8-8.32-5.414 0-9.802 3.725-9.802 8.32 0 4.597 4.388 8.322 9.802 8.322 1.701 0 3.302-.369 4.697-1.019l3.863 1.671-.447-4.309c1.066-1.329 1.687-2.937 1.687-4.665zm-13.102-2.254a1.395 1.395 0 1 1 0-2.79 1.395 1.395 0 0 1 0 2.79zm6.604 0a1.395 1.395 0 1 1 .003-2.79 1.395 1.395 0 0 1-.003 2.79z"></path><path d="M21.604 11.885c1.515 0 2.957.27 4.271.755.009-.175.03-.345.03-.521 0-6.074-5.801-10.996-12.953-10.996C5.799 1.123 0 6.044 0 12.119c0 2.284.822 4.408 2.229 6.167l-.591 5.694 5.104-2.213c1.264.59 2.661.986 4.136 1.189a8.143 8.143 0 0 1-.179-1.65c.001-5.195 4.892-9.421 10.905-9.421zm-4.287-6.428a1.84 1.84 0 1 1-1.841 1.84c0-1.016.825-1.84 1.841-1.84zM8.586 9.139a1.84 1.84 0 0 1 0-3.682 1.84 1.84 0 1 1 0 3.682z"></path></svg></a><div class="qr_code_outer f-hide f-tc">
+<div class="qr_code">
+<i id="close_qrcode"><svg viewbox="0 0 224.512 224.512" xmlns="http://www.w3.org/2000/svg"><path d="M224.507 6.997L217.521 0 112.256 105.258 6.998 0 .005 6.997l105.258 105.257L.005 217.512l6.993 7L112.256 119.24l105.265 105.272 6.986-7-105.258-105.258z" fill="#010002"></path></svg></i>
+<img class="qr_code_img" id="js_qr_code_img" src="/images/wechat-qrcode.jpg"/>
+<p>微信扫一扫<br/> 微信ID：pingcap2015</p>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="subscribe">
+<style media="screen" type="text/css">
+    #mc_embed_signup .response {
+        margin-top: 12px;
+        line-height: 1.4;
+        font-size: 0.65rem;
+    }
+</style>
+<div id="mc_embed_signup">
+<form action="//pingcap.us16.list-manage.com/subscribe/post?u=ab57beb8a88391cf6193c1b48&amp;id=7c67af4f9d" class="validate" id="mc-embedded-subscribe-form" method="post" name="mc-embedded-subscribe-form" novalidate="" target="_blank">
+<div id="mc_embed_signup_scroll">
+<div class="form-inline">
+<input class="form-control" id="mce-EMAIL" name="EMAIL" placeholder="Subscribe to our newsletter" type="email" value=""/>
+<input class="btn btn-subscribe f-tc" id="mc-embedded-subscribe" name="subscribe" type="submit" value="Subscribe"/>
+</div>
+<div class="clear" id="mce-responses">
+<div class="response" id="mce-error-response" style="display: none;"></div>
+<div class="response" id="mce-success-response" style="display: none;"></div>
+</div>
+<div aria-hidden="true" style="position: absolute; left: -5000px;">
+<input name="b_ab57beb8a88391cf6193c1b48_7c67af4f9d" tabindex="-1" type="text" value=""/>
+</div>
+</div>
+</form>
+</div>
+<script src="https://download.pingcap.com/js/mc-validate.js" type="text/javascript"></script>
+<script type="text/javascript">
+;(function($) {
+    window.fnames = new Array()
+    window.ftypes = new Array()
+    fnames[0] = 'EMAIL'
+    ftypes[0] = 'email'
+    fnames[1] = 'FNAME'
+    ftypes[1] = 'text'
+    fnames[2] = 'LNAME'
+    ftypes[2] = 'text'
+})(jQuery)
+var $mcj = jQuery.noConflict(true)
+</script>
+</div>
+</div>
+<div class="container">
+<a class="btn-lang" href="/docs/tools/tidb-binlog-cluster" id="lang">English</a>
+</div>
+</div>
+</nav>
+<div class="doc">
+<div class="container"><div class="sidebar">
+<div class="sticky-sidebar">
+<div class="title"> 文档 </div>
+<div class="st_tree nav-toc"><ul><li class="has-child"><a href="#">关于 TiDB<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/overview/">TiDB 简介</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/architecture/">TiDB 整体架构</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/features/">TiDB 核心特性</a>
+</li></ul>
+</li><li class="has-child"><a href="#">TiDB 快速入门<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/QUICKSTART/">快速入门指南</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/try-tidb/">SQL 基本操作</a>
+</li></ul>
+</li><li class="has-child"><a href="#">TiDB 用户文档<i class="icon-arrow"></i></a><ul><li class="has-child"><a href="#">TiDB 数据库管理<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/sql/tidb-server/">TiDB 服务</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/server-command-option/">TiDB 进程启动参数</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/tidb-server/#tidb-%e6%95%b0%e6%8d%ae%e7%9b%ae%e5%bd%95">TiDB 数据目录</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/system-database/">TiDB 系统数据库</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/variable/">TiDB 系统变量</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/tidb-specific/">TiDB 专用系统变量和语法</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/tidb-server/#tidb-%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%97%a5%e5%bf%97%e6%96%87%e4%bb%b6">TiDB 服务器日志文件</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/privilege/">TiDB 访问权限管理</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/user-account-management/">TiDB 用户账户管理</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/encrypted-connections/">使用加密连接</a>
+</li></ul>
+</li><li class="has-child"><a href="#">TiDB SQL 优化和执行<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/sql/sql-optimizer-overview/">SQL 优化流程简介</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/understanding-the-query-execution-plan/">理解 TiDB 执行计划</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/statistics/">统计信息</a>
+</li></ul>
+</li><li class="has-child"><a href="#">语言结构<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/sql/literal-values/">字面值</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/schema-object-names/">数据库、表、索引、列和别名</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/keywords-and-reserved-words/">关键字和保留字</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/user-defined-variables/">用户变量</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/expression-syntax/">表达式语法</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/comment-syntax/">注释语法</a>
+</li></ul>
+</li><li class="has-child"><a href="#">字符集和时区<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/sql/character-set-support/">字符集支持</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/character-set-configuration/">字符集配置</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/time-zone/">时区</a>
+</li></ul>
+</li><li class="has-child"><a href="#">数据类型<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/sql/datatype/#%e6%95%b0%e5%80%bc%e7%b1%bb%e5%9e%8b">数值类型</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/date-and-time-types/">日期和时间类型</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/datatype/#%e5%ad%97%e7%ac%a6%e4%b8%b2%e7%b1%bb%e5%9e%8b">字符串类型</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/datatype/#json-%e7%b1%bb%e5%9e%8b">JSON 数据类型</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/datatype/#%e6%9e%9a%e4%b8%be%e7%b1%bb%e5%9e%8b">枚举类型</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/datatype/#%e9%9b%86%e5%90%88%e7%b1%bb%e5%9e%8b">集合类型</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/datatype/#%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b%e7%9a%84%e9%bb%98%e8%ae%a4%e5%80%bc">数据类型默认值</a>
+</li></ul>
+</li><li class="has-child"><a href="#">函数和操作符<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/sql/functions-and-operators-reference/">函数和操作符概述</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/type-conversion-in-expression-evaluation/">表达式求值的类型转换</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/operators/">操作符</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/control-flow-functions/">控制流程函数</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/string-functions/">字符串函数</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/numeric-functions-and-operators/">数值函数与操作符</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/date-and-time-functions/">日期和时间函数</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/bit-functions-and-operators/">位函数和操作符</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/cast-functions-and-operators/">Cast 函数和操作符</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/encryption-and-compression-functions/">加密和压缩函数</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/information-functions/">信息函数</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/json-functions/">JSON 函数</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/aggregate-group-by-functions/">GROUP BY 聚合函数</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/miscellaneous-functions/">其他函数</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/precision-math/">精度数学</a>
+</li></ul>
+</li><li class="has-child"><a href="#">SQL 语句语法<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/sql/ddl/">数据定义语句 (DDL)</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/dml/">数据操作语句 (DML)</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/transaction/">事务语句</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/admin/">数据库管理语句</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/prepare/">Prepared SQL 语句语法</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/util/">实用工具语句</a>
+</li><li class="leaf-child">
+<a href="https://pingcap.github.io/sqlgram/">TiDB SQL 语法图</a>
+</li></ul>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/generated-columns/">Generated Column</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/connection-and-APIs/">Connectors 和 API</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/transaction-isolation/">TiDB 事务隔离级别</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/error/">错误码与故障诊断</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/mysql-compatibility/">与 MySQL 兼容性对比</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/tidb-memory-control/">TiDB 内存控制</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/sql/slow-query/">慢查询日志</a>
+</li><li class="has-child"><a href="#">高级功能<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/op-guide/history-read/">历史数据回溯</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/gc/">垃圾回收 (GC)</a>
+</li></ul>
+</li></ul>
+</li><li class="has-child"><a href="#">TiDB 运维文档<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/op-guide/recommendation/">软硬件环境需求</a>
+</li><li class="has-child"><a href="#">部署集群<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/op-guide/ansible-deployment/">Ansible 部署方案（强烈推荐）</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/offline-ansible-deployment/">离线 Ansible 部署方案</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/docker-deployment/">Docker 部署方案</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/docker-compose/">Docker Compose 部署方案</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/location-awareness/">跨机房部署方案</a>
+</li></ul>
+</li><li class="has-child"><a href="#">配置集群<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/op-guide/configuration/">参数解释</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/tidb-config-file/">TiDB 配置项解释</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/ansible-deployment-rolling-update/#%e5%8f%98%e6%9b%b4%e7%bb%84%e4%bb%b6%e9%85%8d%e7%bd%ae">使用 Ansible 变更组件配置</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/security/">开启 TLS 验证</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/generate-self-signed-certificates/">生成自签名证书</a>
+</li></ul>
+</li><li class="has-child"><a href="#">监控集群<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/op-guide/monitor-overview/">整体监控框架概述</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/dashboard-overview-info/">重要监控指标详解</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/monitor/">组件状态 API &amp; 监控</a>
+</li></ul>
+</li><li class="has-child"><a href="#">扩容缩容<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/op-guide/horizontal-scale/">集群扩容缩容方案</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/ansible-deployment-scale/">使用 Ansible 扩容缩容</a>
+</li></ul>
+</li><li class="has-child"><a href="#">升级<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/op-guide/ansible-deployment-rolling-update/#%e5%8d%87%e7%ba%a7%e7%bb%84%e4%bb%b6%e7%89%88%e6%9c%ac">升级组件版本</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/tidb-v2.0-upgrade-guide/">TiDB 2.0 升级操作指南</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/tidb-v2.1-upgrade-guide/">TiDB 2.1 升级操作指南</a>
+</li></ul>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/tune-tikv/">性能调优</a>
+</li><li class="has-child"><a href="#">备份与迁移<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/op-guide/backup-restore/">备份与恢复</a>
+</li><li class="has-child"><a href="#">数据迁移<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/op-guide/migration-overview/">数据迁移概述</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/migration/#%e4%bd%bf%e7%94%a8-mydumperloader-%e5%85%a8%e9%87%8f%e5%af%bc%e5%85%a5%e6%95%b0%e6%8d%ae">全量导入</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/op-guide/migration/#%e4%bd%bf%e7%94%a8-syncer-%e5%a2%9e%e9%87%8f%e5%af%bc%e5%85%a5%e6%95%b0%e6%8d%ae">增量导入</a>
+</li></ul>
+</li></ul>
+</li><li class="leaf-child">
+<a href="/docs-cn/trouble-shooting/">故障诊断</a>
+</li></ul>
+</li><li class="has-child"><a href="#">TiDB 周边工具<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/tools/syncer/">Syncer</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/mydumper/">mydumper</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/loader/">Loader</a>
+</li><li class="has-child"><a href="#">TiDB-Lightning<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/tools/lightning/overview-architecture/">简介</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/lightning/deployment/">部署执行</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/lightning/checkpoints/">断点续传</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/lightning/monitor/">监控告警</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/lightning/errors/">故障诊断</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/lightning/faq/">常见问题与解答</a>
+</li></ul>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/tidb-binlog-cluster/">TiDB-Binlog</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/pd-control/">PD Control</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/pd-recover/">PD Recover</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/tikv-control/">TiKV Control</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tools/tidb-controller/">TiDB Controller</a>
+</li></ul>
+</li><li class="has-child"><a href="#">TiSpark 文档<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/tispark/tispark-quick-start-guide/">TiSpark 快速入门指南</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/tispark/tispark-user-guide/">TiSpark 用户指南</a>
+</li></ul>
+</li><li class="leaf-child">
+<a href="/docs-cn/FAQ/">常见问题与解答(FAQ)</a>
+</li><li class="leaf-child">
+<a href="https://pingcap.com/blog-cn/tidb-best-practice/">最佳实践</a>
+</li><li class="has-child"><a href="#">版本发布历史<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="/docs-cn/releases/209/">2.0.9</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/21rc5/">2.1 RC5</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/21rc4/">2.1 RC4</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/208/">2.0.8</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/21rc3/">2.1 RC3</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/21rc2/">2.1 RC2</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/207/">2.0.7</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/21rc1/">2.1 RC1</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/206/">2.0.6</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/205/">2.0.5</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/21beta/">2.1 Beta</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/204/">2.0.4</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/203/">2.0.3</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/202/">2.0.2</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/201/">2.0.1</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/2.0ga/">2.0</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/2rc5/">2.0 RC5</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/2rc4/">2.0 RC4</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/2rc3/">2.0 RC3</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/2rc1/">2.0 RC1</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/11beta/">1.1 Beta</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/11alpha/">1.1 Alpha</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/ga/">1.0</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/prega/">Pre-GA</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/rc4/">RC4</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/rc3/">RC3</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/rc2/">RC2</a>
+</li><li class="leaf-child">
+<a href="/docs-cn/releases/rc1/">RC1</a>
+</li></ul>
+</li><li class="leaf-child">
+<a href="/docs-cn/ROADMAP/">TiDB 路线图</a>
+</li><li class="has-child"><a href="#">用户案例<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="http://t.cn/RnY8fGn">北京银行</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/REXx0Qe">海航</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/EAFCqhl">美团点评</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RnLfEMf">今日头条</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/R1MAXEq">转转</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RT8FbP6">Mobike</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RucuK6m">饿了么（一）</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RnsqFT6">饿了么（二）</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/EvErsc1">爱奇艺</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RTYVhzH">易果生鲜</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RmXeNKR">同程旅游（一）</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/EAmsF08">同程旅游（二）</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RTKnsL7">去哪儿</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/EAuvfcs">火星文化</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RQVePoX">G7</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RT9r5di">一面数据</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RHRQfNT">凤凰网</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RTKnKSX">猿辅导</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/Rm1F6lg">Mobikok</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/R8bXM2f">二维火</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/R1wSEJH">客如云</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RE5xYKn">Ping++</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/Rnv3IVs">乐视云</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/REj7tSv">零氪科技</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/R3CrviR">威锐达测控</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RT9r7hx">盖娅互娱</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/R8k4AWB">游族网络</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RBP12zj">西山居</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/Rnoab5D">FUNYOURS JAPAN</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/EAuvLIv">丰巢科技</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RrHzUGW">特来电</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RTKm6ds">万达网络</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RTKnTev">360金融</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/R3Wd9p3">中国电信翼支付</a>
+</li><li class="leaf-child">
+<a href="http://t.cn/RTYWADg">某电信运营商</a>
+</li></ul>
+</li><li class="has-child"><a href="#">更多资源<i class="icon-arrow"></i></a><ul><li class="leaf-child">
+<a href="https://github.com/pingcap/tidb-tools">常用工具</a>
+</li><li class="leaf-child">
+<a href="https://pingcap.com/blog-cn/">PingCAP 团队技术博客</a>
+</li><li class="leaf-child">
+<a href="https://zhuanlan.zhihu.com/newsql">知乎专栏</a>
+</li><li class="leaf-child">
+<a href="https://pingcap.com/weekly/">Weekly</a>
+</li><li class="leaf-child">
+<a href="https://pingcap.com/docs">英文文档</a>
+</li></ul>
+</li></ul>
+</div>
+</div>
+</div>
+<div class="archive">
+<div class="content markdown-body">
+<h1 id="tidb-binlog-cluster-版本用户文档">TiDB-Binlog Cluster 版本用户文档</h1>
+<p>本文档介绍 cluster 版本 TiDB-Binlog 的架构以及部署方案。</p>
+<p>TiDB-Binlog 是一个用于收集 TiDB 的 Binlog，并提供实时备份和同步功能的商业工具。</p>
+<p>TiDB-Binlog 支持以下功能场景：</p>
+<ul>
+<li><strong>数据同步</strong>：同步 TiDB 集群数据到其他数据库</li>
+<li><strong>实时备份和恢复</strong>：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复</li>
+</ul>
+<h2 id="tidb-binlog-架构">TiDB-Binlog 架构</h2>
+<p>TiDB-Binlog 的整体架构：</p>
+<p><img alt="TiDB-Binlog 架构" class="lazy" data-original="/images/docs-cn/tidb_binlog_cluster_architecture.png" src="/images/svgs/loader-spinner.svg"/></p>
+<p>TiDB-Binlog 集群主要分为 Pump 和 Drainer 两个组件：</p>
+<h3 id="pump">Pump</h3>
+<p>Pump 用于实时记录 TiDB 产生的 Binlog，并将 Binlog 按照事务的提交时间进行排序，再提供给 Drainer 进行消费。</p>
+<h3 id="drainer">Drainer</h3>
+<p>Drainer 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 SQL 或者指定格式的数据，最终同步到下游。</p>
+<h2 id="主要特性">主要特性</h2>
+<ul>
+<li>多个 Pump 形成一个集群，可以水平扩容；</li>
+<li>TiDB 通过内置的 Pump Client 将 Binlog 分发到各个 Pump；</li>
+<li>Pump 负责存储 Binlog，并将 Binlog 按顺序提供给 Drainer；</li>
+<li>Drainer 负责读取各个 Pump 的 Binlog，归并排序后发送到下游。</li>
+</ul>
+<h2 id="服务器要求">服务器要求</h2>
+<p>Pump 和 Drainer 都支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台上。对于开发，测试以及生产环境的服务器硬件配置有以下要求和建议：</p>
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>部署数量</th>
+<th>CPU</th>
+<th>磁盘</th>
+<th>内存</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pump</td>
+<td>3</td>
+<td>8核+</td>
+<td>SSD, 200 GB+</td>
+<td>16G</td>
+</tr>
+<tr>
+<td>Drainer</td>
+<td>1</td>
+<td>8核+</td>
+<td>SAS, 100 GB+ （如果输出为本地文件，则使用 SSD，并增加磁盘大小）</td>
+<td>16G</td>
+</tr>
+</tbody>
+</table>
+<h2 id="注意">注意</h2>
+<ul>
+<li>需要使用 TiDB v2.0.8-binlog、v2.1.0-rc.5 及以上版本，否则不兼容该版本的 TiDB-Binlog。</li>
+<li>在运行 TiDB 时，需要保证至少一个 Pump 正常运行。</li>
+<li>通过给 TiDB 增加启动参数 enable-binlog 来开启 Binlog。</li>
+<li>Drainer 不支持对 ignore schemas（在过滤列表中的 schemas）的 table 进行 rename DDL 操作。</li>
+<li>在已有的 TiDB 集群中启动 Drainer，一般需要全量备份并且获取 savepoint，然后导入全量备份，最后启动 Drainer 从 savepoint 开始同步增量数据。</li>
+<li>Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他类型的目的地中，可以设置 Drainer 将 Binlog 同步到 Kafka，再读取 Kafka 中的数据进行自定义处理，参考 <a href="/docs-cn/tools/binlog-slave-client">binlog slave client 用户文档</a>。</li>
+<li>如果 TiDB-Binlog 用于增量恢复，可以设置下游为 <code>pb</code> 将 binlog 同步到本地文件中，再使用 <a href="/docs-cn/tools/reparo">Reparo</a> 恢复增量数据。</li>
+<li>如果设置下游为 <code>tidb</code>，将使用 TiDB 的隐藏列 <code>_tidb_rowid</code> 进行同步，需要注意的是，不能有除了 Drainer 外的流量写入下游，否则数据可能会出错。</li>
+<li>Pump/Drainer 的状态需要区分已暂停（paused）和下线（offline），Ctrl + C 或者 kill 进程，Pump 和 Drainer 的状态都将变为 paused。暂停状态的 Pump 不需要将已保存的 Binlog 数据全部发送到 Drainer；如果需要较长时间退出 Pump（或不再使用该 Pump），需要使用 binlogctl 工具来下线 Pump。Drainer 同理。</li>
+<li>如果下游为 MySQL/TiDB，数据同步后可以使用 <a href="/docs-cn/tools/sync-diff-inspector">sync-diff-inspector</a> 进行数据校验。</li>
+</ul>
+<h2 id="tidb-binlog-部署">TiDB-Binlog 部署</h2>
+<h3 id="使用-tidb-ansible-部署-tidb-binlog">使用 TiDB-Ansible 部署 TiDB-Binlog</h3>
+<h4 id="第-1-步-下载-tidb-ansible">第 1 步：下载 TiDB-Ansible</h4>
+<ol>
+<li><p>以 TiDB 用户登录中控机并进入 <code>/home/tidb</code> 目录。以下为 TiDB-Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。</p>
+<table>
+<thead>
+<tr>
+<th>TiDB-Ansible 分支</th>
+<th>TiDB 版本</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>release-2.0-new-binlog</td>
+<td>2.0 版本</td>
+<td>最新稳定版本，可用于生产环境。</td>
+</tr>
+<tr>
+<td>release-2.1</td>
+<td>2.1 版本</td>
+<td>最新 2.1 版本，可用于生产环境（建议）。</td>
+</tr>
+<tr>
+<td>master</td>
+<td>master 版本</td>
+<td>包含最新特性，每日更新。</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>使用以下命令从 GitHub <a href="https://github.com/pingcap/tidb-ansible">TiDB-Ansible 项目</a>上下载 TiDB-Ansible 相应分支，默认的文件夹名称为 <code>tidb-ansible</code>。</p>
+<ul>
+<li><p>下载 2.0 版本：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone -b release-2.0-new-binlog https://github.com/pingcap/tidb-ansible.git</code></pre></div></li>
+<li><p>下载 2.1 版本：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone -b release-2.1 https://github.com/pingcap/tidb-ansible.git</code></pre></div></li>
+<li><p>下载 master 版本：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pingcap/tidb-ansible.git</code></pre></div></li>
+</ul></li>
+</ol>
+<h4 id="第-2-步-部署-pump">第 2 步：部署 Pump</h4>
+<ol>
+<li><p>修改 tidb-ansible/inventory.ini 文件</p>
+<ol>
+<li><p>设置 <code>enable_binlog = True</code>，表示 TiDB 集群开启 binlog。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">## binlog trigger
+enable_binlog = True</pre></div></li>
+<li><p>为 <code>pump_servers</code> 主机组添加部署机器 IP。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">## Binlog Part
+[pump_servers]
+172.16.10.72
+172.16.10.73
+172.16.10.74</pre></div>
+<p>默认 Pump 保留 5 天数据，如需修改可修改 <code>tidb-ansible/conf/pump.yml</code> 文件中 <code>gc</code> 变量值，并取消注释，如修改为 7。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">global:
+  # an integer value to control the expiry date of the binlog data, which indicates for how long (in days) the binlog data would be stored
+  # must be bigger than 0
+  gc: 7</pre></div>
+<p>请确保部署目录有足够空间存储 binlog，详见：<a href="/docs-cn/op-guide/ansible-deployment#部署目录调整">部署目录调整</a>，也可为 Pump 设置单独的部署目录。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">## Binlog Part
+[pump_servers]
+pump1 ansible_host=172.16.10.72 deploy_dir=/data1/pump
+pump2 ansible_host=172.16.10.73 deploy_dir=/data1/pump
+pump3 ansible_host=172.16.10.74 deploy_dir=/data1/pump</pre></div></li>
+</ol></li>
+<li><p>部署并启动 TiDB 集群</p>
+<p>使用 Ansible 部署 TiDB 集群的具体方法参考 <a href="/docs-cn/op-guide/ansible-deployment">TiDB Ansible 部署方案</a>，开启 binlog 后默认会部署和启动 Pump 服务。</p></li>
+<li><p>查看 Pump 服务状态</p>
+<p>使用 binlogctl 查看 Pump 服务状态，pd-urls 参数请替换为集群 PD 地址，结果 State 为 online 表示 Pump 启动成功。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd /home/tidb/tidb-ansible
+$ resources/bin/binlogctl -pd-urls<span style="color:#f92672">=</span>http://172.16.10.72:2379 -cmd pumps
+<span style="color:#ae81ff">2018</span>/09/21 <span style="color:#ae81ff">16</span>:45:54 nodes.go:46: <span style="color:#f92672">[</span>info<span style="color:#f92672">]</span> pump: &amp;<span style="color:#f92672">{</span>NodeID:ip-172-16-10-72:8250 Addr:172.16.10.72:8250 State:online IsAlive:false Score:0 Label:&lt;nil&gt; MaxCommitTS:0 UpdateTS:403051525690884099<span style="color:#f92672">}</span>
+<span style="color:#ae81ff">2018</span>/09/21 <span style="color:#ae81ff">16</span>:45:54 nodes.go:46: <span style="color:#f92672">[</span>info<span style="color:#f92672">]</span> pump: &amp;<span style="color:#f92672">{</span>NodeID:ip-172-16-10-73:8250 Addr:172.16.10.73:8250 State:online IsAlive:false Score:0 Label:&lt;nil&gt; MaxCommitTS:0 UpdateTS:403051525703991299<span style="color:#f92672">}</span>
+<span style="color:#ae81ff">2018</span>/09/21 <span style="color:#ae81ff">16</span>:45:54 nodes.go:46: <span style="color:#f92672">[</span>info<span style="color:#f92672">]</span> pump: &amp;<span style="color:#f92672">{</span>NodeID:ip-172-16-10-74:8250 Addr:172.16.10.74:8250 State:online IsAlive:false Score:0 Label:&lt;nil&gt; MaxCommitTS:0 UpdateTS:403051525717360643<span style="color:#f92672">}</span></code></pre></div></li>
+</ol>
+<h4 id="第-3-步-部署-drainer">第 3 步：部署 Drainer</h4>
+<ol>
+<li><p>获取 initial_commit_ts</p>
+<p>使用 binlogctl 工具生成 Drainer 初次启动所需的 tso 信息，命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd /home/tidb/tidb-ansible
+$ resources/bin/binlogctl -pd-urls<span style="color:#f92672">=</span>http://127.0.0.1:2379 -cmd generate_meta
+INFO<span style="color:#f92672">[</span><span style="color:#ae81ff">0000</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span>pd<span style="color:#f92672">]</span> create pd client with endpoints <span style="color:#f92672">[</span>http://192.168.199.118:32379<span style="color:#f92672">]</span>
+INFO<span style="color:#f92672">[</span><span style="color:#ae81ff">0000</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span>pd<span style="color:#f92672">]</span> leader switches to: http://192.168.199.118:32379, previous:
+INFO<span style="color:#f92672">[</span><span style="color:#ae81ff">0000</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span>pd<span style="color:#f92672">]</span> init cluster id <span style="color:#ae81ff">6569368151110378289</span>
+<span style="color:#ae81ff">2018</span>/06/21 <span style="color:#ae81ff">11</span>:24:47 meta.go:117: <span style="color:#f92672">[</span>info<span style="color:#f92672">]</span> meta: &amp;<span style="color:#f92672">{</span>CommitTS:400962745252184065<span style="color:#f92672">}</span></code></pre></div>
+<p>该命令会生成一个文件 <code>{data-dir}/savepoint</code>，该文件中包含 tso，用该 tso 作为 Drainer 初次启动使用的 <code>initial-commit-ts</code> 参数的值。</p></li>
+<li><p>全量数据的备份与恢复</p>
+<p>如果下游为 MySQL/TiDB， 需要保证数据的完整性，在 Drainer 启动前（Pump 运行后十分钟左右）进行数据的全量备份和恢复。</p>
+<p>推荐使用 mydumper 备份 TiDB 的全量数据，再使用 loader 将备份数据导入到下游。具体使用方法参考：<a href="https://github.com/pingcap/docs-cn/blob/master/op-guide/backup-restore.md">备份与恢复</a>。</p></li>
+<li><p>修改 <code>tidb-ansible/inventory.ini</code> 文件</p>
+<p>为 <code>drainer_servers</code> 主机组添加部署机器 IP，initial_commit_ts 请设置为获取的 initial_commit_ts，仅用于 Drainer 第一次启动。</p>
+<ul>
+<li><p>以下游为 MySQL 为例，别名为 <code>drainer_mysql</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">[drainer_servers]
+drainer_mysql ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"</pre></div></li>
+<li><p>以下游为 pb 为例，别名为 <code>drainer_pb</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">[drainer_servers]
+drainer_pb ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"</pre></div></li>
+</ul></li>
+<li><p>修改配置文件</p>
+<ul>
+<li><p>以下游为 MySQL 为例</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd /home/tidb/tidb-ansible/conf
+$ cp drainer.toml drainer_mysql_drainer.toml
+$ vi drainer_mysql_drainer.toml</code></pre></div>
+<blockquote>
+<p><strong>注意：</strong> 配置文件名命名规则为 <code>别名_drainer.toml</code>，否则部署时无法找到自定义配置文件。</p>
+</blockquote>
+<p>db-type 设置为 “mysql”， 配置下游 MySQL 信息。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># downstream storage, equal to --dest-db-type</span>
+<span style="color:#75715e"># Valid values are "mysql", "pb", "kafka", "flash", "tidb".</span>
+<span style="color:#a6e22e">db</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">type</span> = <span style="color:#e6db74">"mysql"</span>
+
+<span style="color:#75715e"># the downstream MySQL protocol database</span>
+[<span style="color:#a6e22e">syncer</span>.<span style="color:#a6e22e">to</span>]
+<span style="color:#a6e22e">host</span> = <span style="color:#e6db74">"172.16.10.72"</span>
+<span style="color:#a6e22e">user</span> = <span style="color:#e6db74">"root"</span>
+<span style="color:#a6e22e">password</span> = <span style="color:#e6db74">"123456"</span>
+<span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">3306</span>
+<span style="color:#75715e"># Time and size limits for flash batch write</span>
+<span style="color:#75715e"># time-limit = "30s"</span>
+<span style="color:#75715e"># size-limit = "100000"</span></code></pre></div></li>
+<li><p>以下游为 pb 为例</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd /home/tidb/tidb-ansible/conf
+$ cp drainer.toml drainer_pb_drainer.toml
+$ vi drainer_pb_drainer.toml</code></pre></div>
+<p>db-type 设置为 “pb”。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># downstream storage, equal to --dest-db-type</span>
+<span style="color:#75715e"># Valid values are "mysql", "pb", "kafka", "flash", "tidb".</span>
+<span style="color:#a6e22e">db</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">type</span> = <span style="color:#e6db74">"pb"</span>
+
+<span style="color:#75715e"># Uncomment this if you want to use `pb` or `sql` as `db-type`.</span>
+<span style="color:#75715e"># `Compress` compresses the output file, like the `pb` and `sql` file. Now it supports the `gzip` algorithm only. </span>
+<span style="color:#75715e"># The value can be `gzip`. Leave it empty to disable compression. </span>
+[<span style="color:#a6e22e">syncer</span>.<span style="color:#a6e22e">to</span>]
+<span style="color:#a6e22e">compression</span> = <span style="color:#e6db74">""</span>
+<span style="color:#75715e"># default data directory: "{{ deploy_dir }}/data.drainer"</span>
+<span style="color:#75715e"># dir = "data.drainer"</span></code></pre></div></li>
+</ul></li>
+<li><p>部署 Drainer</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ansible-playbook deploy_drainer.yml</code></pre></div></li>
+<li><p>启动 Drainer</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ansible-playbook start_drainer.yml</code></pre></div></li>
+</ol>
+<h3 id="使用-binary-部署-tidb-binlog">使用 Binary 部署 TiDB-Binlog</h3>
+<h4 id="下载官方-binary">下载官方 Binary</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）
+wget https://download.pingcap.org/tidb-<span style="color:#f92672">{</span>version<span style="color:#f92672">}</span>-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-<span style="color:#f92672">{</span>version<span style="color:#f92672">}</span>-linux-amd64.sha256
+
+<span style="color:#75715e"># 检查文件完整性，返回 ok 则正确
+</span><span style="color:#75715e"></span>sha256sum -c tidb-<span style="color:#f92672">{</span>version<span style="color:#f92672">}</span>-linux-amd64.sha256
+
+Pump <span style="color:#f92672">&amp;&amp;</span> Drainer<span style="color:#f92672">(</span>cluster-latest、v2.1.0-rc.5 及以上版本<span style="color:#f92672">)</span>
+wget https://download.pingcap.org/tidb-binlog-<span style="color:#f92672">{</span>version<span style="color:#f92672">}</span>-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-binlog-<span style="color:#f92672">{</span>version<span style="color:#f92672">}</span>-linux-amd64.sha256
+
+<span style="color:#75715e"># 检查文件完整性，返回 ok 则正确
+</span><span style="color:#75715e"></span>sha256sum -c tidb-binlog-<span style="color:#f92672">{</span>version<span style="color:#f92672">}</span>-linux-amd64.sha256</code></pre></div>
+<h4 id="使用样例">使用样例</h4>
+<p>假设有三个 PD，一个 TiDB，另外有两台机器用于部署 Pump，一台机器用于部署 Drainer。各个节点信息如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">TiDB="192.168.0.10"
+PD1="192.168.0.16"
+PD2="192.168.0.15"
+PD3="192.168.0.14"
+Pump="192.168.0.11"
+Pump="192.168.0.12"
+Drainer="192.168.0.13"</pre></div>
+<p>下面以此为例，说明 Pump/Drainer 的使用。</p>
+<ol>
+<li><p>使用 binary 部署 Pump</p>
+<ul>
+<li><p>Pump 命令行参数说明（以在 “192.168.0.11” 上部署为例）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Usage of Pump:
+-L string
+    日志输出信息等级设置：debug，info，warn，error，fatal <span style="color:#f92672">(</span>默认 <span style="color:#e6db74">"info"</span><span style="color:#f92672">)</span>
+-V
+    打印版本信息
+-addr string
+    Pump 提供服务的 RPC 地址<span style="color:#f92672">(</span>-addr<span style="color:#f92672">=</span><span style="color:#e6db74">"192.168.0.11:8250"</span><span style="color:#f92672">)</span>
+-advertise-addr string
+    Pump 对外提供服务的 RPC 地址<span style="color:#f92672">(</span>-advertise-addr<span style="color:#f92672">=</span><span style="color:#e6db74">"192.168.0.11:8250"</span><span style="color:#f92672">)</span>
+-config string
+    配置文件路径，如果你指定了配置文件，Pump 会首先读取配置文件的配置；
+    如果对应的配置在命令行参数里面也存在，Pump 就会使用命令行参数的配置来覆盖配置文件里的配置。
+-data-dir string
+    Pump 数据存储位置路径
+-enable-tolerant
+    开启 tolerant 后，如果 binlog 写入失败，Pump 不会报错（默认开启）
+-gc int
+    Pump 只保留多少天以内的数据 <span style="color:#f92672">(</span>默认 <span style="color:#ae81ff">7</span><span style="color:#f92672">)</span>
+-heartbeat-interval int
+    Pump 向 PD 发送心跳间隔 <span style="color:#f92672">(</span>单位 秒<span style="color:#f92672">)</span>
+-log-file string
+    log 文件路径
+-log-rotate string
+    log 文件切换频率，hour/day
+-metrics-addr string
+    Prometheus Pushgateway 地址，不设置则禁止上报监控信息
+-metrics-interval int
+    监控信息上报频率 <span style="color:#f92672">(</span>默认 <span style="color:#ae81ff">15</span>，单位 秒<span style="color:#f92672">)</span>
+-pd-urls string
+    PD 集群节点的地址 <span style="color:#f92672">(</span>-pd-urls<span style="color:#f92672">=</span><span style="color:#e6db74">"http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"</span><span style="color:#f92672">)</span></code></pre></div></li>
+<li><p>Pump 配置文件（以在 “192.168.0.11” 上部署为例）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># Pump Configuration</span>
+
+<span style="color:#75715e"># Pump 绑定的地址</span>
+<span style="color:#a6e22e">addr</span> = <span style="color:#e6db74">"192.168.0.11:8250"</span>
+
+<span style="color:#75715e"># Pump 对外提供服务的地址</span>
+<span style="color:#a6e22e">advertise</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">addr</span> = <span style="color:#e6db74">"192.168.0.11:8250"</span>
+
+<span style="color:#75715e"># Pump 只保留多少天以内的数据 (默认 7)</span>
+<span style="color:#a6e22e">gc</span> = <span style="color:#ae81ff">7</span>
+
+<span style="color:#75715e"># Pump 数据存储位置路径</span>
+<span style="color:#a6e22e">data</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">dir</span> = <span style="color:#e6db74">"data.pump"</span>
+
+<span style="color:#75715e"># Pump 向 PD 发送心跳的间隔 (单位 秒)</span>
+<span style="color:#a6e22e">heartbeat</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">interval</span> = <span style="color:#ae81ff">2</span>
+
+<span style="color:#75715e"># PD 集群节点的地址</span>
+<span style="color:#a6e22e">pd</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">urls</span> = <span style="color:#e6db74">"http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"</span></code></pre></div></li>
+<li><p>启动示例</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./bin/pump -config pump.toml</code></pre></div>
+<p>如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。</p></li>
+</ul></li>
+<li><p>使用 binary 部署 Drainer</p>
+<ul>
+<li><p>Drainer 命令行参数说明（以在 “192.168.0.13” 上部署为例）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Usage of Drainer
+-L string
+    日志输出信息等级设置：debug，info，warn，error，fatal <span style="color:#f92672">(</span>默认 <span style="color:#e6db74">"info"</span><span style="color:#f92672">)</span>
+-V
+    打印版本信息
+-addr string
+    Drainer 提供服务的地址<span style="color:#f92672">(</span>-addr<span style="color:#f92672">=</span><span style="color:#e6db74">"192.168.0.13:8249"</span><span style="color:#f92672">)</span>
+-c int
+    同步下游的并发数，该值设置越高同步的吞吐性能越好 <span style="color:#f92672">(</span>default <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span>
+-config string
+    配置文件路径，Drainer 会首先读取配置文件的配置；
+    如果对应的配置在命令行参数里面也存在，Drainer 就会使用命令行参数的配置来覆盖配置文件里面的配置
+-data-dir string
+    Drainer 数据存储位置路径 <span style="color:#f92672">(</span>默认 <span style="color:#e6db74">"data.drainer"</span><span style="color:#f92672">)</span>
+-dest-db-type string
+    Drainer 下游服务类型 <span style="color:#f92672">(</span>默认为 mysql，支持 kafka、pb、flash、tidb<span style="color:#f92672">)</span>
+-detect-interval int
+    向 PD 查询在线 Pump 的时间间隔 <span style="color:#f92672">(</span>默认 <span style="color:#ae81ff">10</span>，单位 秒<span style="color:#f92672">)</span>
+-disable-detect
+    是否禁用冲突监测
+-disable-dispatch
+    是否禁用拆分单个 binlog 的 SQL 的功能，如果设置为 true，则每个 binlog
+    按顺序依次还原成单个事务进行同步（下游服务类型为 MySQL，该项设置为 False）
+-ignore-schemas string
+    db 过滤列表 <span style="color:#f92672">(</span>默认 <span style="color:#e6db74">"INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"</span><span style="color:#f92672">)</span>，
+    不支持对 ignore schemas 的 table 进行 rename DDL 操作
+-initial-commit-ts <span style="color:#f92672">(</span>默认为 <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
+    如果 Drainer 没有相关的断点信息，可以通过该项来设置相关的断点信息
+-log-file string
+    log 文件路径
+-log-rotate string
+    log 文件切换频率，hour/day
+-metrics-addr string
+    Prometheus Pushgateway 地址，不设置则禁止上报监控信息
+-metrics-interval int
+    监控信息上报频率（默认 <span style="color:#ae81ff">15</span>，单位：秒）
+-pd-urls string
+    PD 集群节点的地址 <span style="color:#f92672">(</span>-pd-urls<span style="color:#f92672">=</span><span style="color:#e6db74">"http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"</span><span style="color:#f92672">)</span>
+-safe-mode
+    是否开启安全模式（将 update 语句拆分为 delete + replace 语句）
+-txn-batch int
+    输出到下游数据库一个事务的 SQL 数量（默认 <span style="color:#ae81ff">1</span>）</code></pre></div></li>
+<li><p>Drainer 配置文件（以在 “192.168.0.13” 上部署为例）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># Drainer Configuration.</span>
+
+<span style="color:#75715e"># Drainer 提供服务的地址("192.168.0.13:8249")</span>
+<span style="color:#a6e22e">addr</span> = <span style="color:#e6db74">"192.168.0.13:8249"</span>
+
+<span style="color:#75715e"># 向 PD 查询在线 Pump 的时间间隔 (默认 10，单位 秒)</span>
+<span style="color:#a6e22e">detect</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">interval</span> = <span style="color:#ae81ff">10</span>
+
+<span style="color:#75715e"># Drainer 数据存储位置路径 (默认 "data.drainer")</span>
+<span style="color:#a6e22e">data</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">dir</span> = <span style="color:#e6db74">"data.drainer"</span>
+
+<span style="color:#75715e"># PD 集群节点的地址</span>
+<span style="color:#a6e22e">pd</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">urls</span> = <span style="color:#e6db74">"http://192.168.0.16:2379,http://192.168.0.15:2379,http://192.168.0.14:2379"</span>
+
+<span style="color:#75715e"># log 文件路径</span>
+<span style="color:#a6e22e">log</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">file</span> = <span style="color:#e6db74">"drainer.log"</span>
+
+<span style="color:#75715e"># Syncer Configuration</span>
+[<span style="color:#a6e22e">syncer</span>]
+
+<span style="color:#75715e"># db 过滤列表 (默认 "INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql,test"),</span>
+<span style="color:#75715e"># 不支持对 ignore schemas 的 table 进行 rename DDL 操作</span>
+<span style="color:#a6e22e">ignore</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">schemas</span> = <span style="color:#e6db74">"INFORMATION_SCHEMA,PERFORMANCE_SCHEMA,mysql"</span>
+
+<span style="color:#75715e"># 输出到下游数据库一个事务的 SQL 数量 (默认 1)</span>
+<span style="color:#a6e22e">txn</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">batch</span> = <span style="color:#ae81ff">1</span>
+
+<span style="color:#75715e"># 同步下游的并发数，该值设置越高同步的吞吐性能越好 (默认 1)</span>
+<span style="color:#a6e22e">worker</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">count</span> = <span style="color:#ae81ff">1</span>
+
+<span style="color:#75715e"># 是否禁用拆分单个 binlog 的 SQL 的功能，如果设置为 true，则按照每个 binlog</span>
+<span style="color:#75715e"># 顺序依次还原成单个事务进行同步（下游服务类型为 MySQL, 该项设置为 False）</span>
+<span style="color:#a6e22e">disable</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">dispatch</span> = <span style="color:#66d9ef">false</span>
+
+<span style="color:#75715e"># Drainer 下游服务类型（默认为 mysql）</span>
+<span style="color:#75715e"># 参数有效值为 "mysql"，"pb"，"kafka"，"flash"，"tidb"</span>
+<span style="color:#a6e22e">db</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">type</span> = <span style="color:#e6db74">"mysql"</span>
+
+<span style="color:#75715e"># replicate-do-db 配置的优先级高于 replicate-do-table。如果配置了相同的库名，支持使用正则表达式进行配置。</span>
+<span style="color:#75715e"># 以 '~' 开始声明使用正则表达式</span>
+
+<span style="color:#75715e"># replicate-do-db = ["~^b.*","s1"]</span>
+
+<span style="color:#75715e"># [[syncer.replicate-do-table]]</span>
+<span style="color:#75715e"># db-name ="test"</span>
+<span style="color:#75715e"># tbl-name = "log"</span>
+
+<span style="color:#75715e"># [[syncer.replicate-do-table]]</span>
+<span style="color:#75715e"># db-name ="test"</span>
+<span style="color:#75715e"># tbl-name = "~^a.*"</span>
+
+<span style="color:#75715e"># db-type 设置为 mysql 时，下游数据库服务器参数</span>
+[<span style="color:#a6e22e">syncer</span>.<span style="color:#a6e22e">to</span>]
+<span style="color:#a6e22e">host</span> = <span style="color:#e6db74">"192.168.0.13"</span>
+<span style="color:#a6e22e">user</span> = <span style="color:#e6db74">"root"</span>
+<span style="color:#a6e22e">password</span> = <span style="color:#e6db74">""</span>
+<span style="color:#a6e22e">port</span> = <span style="color:#ae81ff">3306</span>
+
+<span style="color:#75715e"># db-type 设置为 pb 时，存放 binlog 文件的目录</span>
+<span style="color:#75715e"># [syncer.to]</span>
+<span style="color:#75715e"># dir = "data.drainer"</span>
+
+<span style="color:#75715e"># db-type 设置为 kafka 时，Kafka 相关配置</span>
+<span style="color:#75715e"># [syncer.to]</span>
+<span style="color:#75715e"># zookeeper-addrs = "127.0.0.1:2181"</span>
+<span style="color:#75715e"># kafka-addrs = "127.0.0.1:9092"</span>
+<span style="color:#75715e"># kafka-version = "0.8.2.0"</span></code></pre></div></li>
+<li><p>启动示例</p>
+<blockquote>
+<p><strong>注意</strong>：如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 initial-commit-ts 的值，并进行全量数据的备份与恢复。详细信息参见<a href="#第-3-步部署-drainer">部署 Drainer</a>。</p>
+</blockquote>
+<p>初次启动时使用参数 <code>initial-commit-ts</code>， 命令如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./bin/drainer -config drainer.toml -initial-commit-ts <span style="color:#f92672">{</span>initial-commit-ts<span style="color:#f92672">}</span></code></pre></div>
+<p>如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。</p></li>
+</ul></li>
+</ol>
+<h2 id="tidb-binlog-运维">TiDB-Binlog 运维</h2>
+<h3 id="pump-drainer-状态">Pump/Drainer 状态</h3>
+<p>Pump/Drainer 中状态的定义：</p>
+<ul>
+<li>online：正常运行中；</li>
+<li>pausing：暂停中，当使用 kill 或者 Ctrl+C 退出进程时，都将处于该状态；</li>
+<li>paused：已暂停，处于该状态时 Pump 不接受写 binlog 的请求，也不继续为 Drainer 提供 binlog，Drainer 不再往下游同步数据。当 Pump/Drainer 安全退出了所有的线程后，将自己的状态切换为 paused，再退出进程；</li>
+<li>closing：下线中，使用 binlogctl 控制 Pump/Drainer 下线，在进程退出前都处于该状态。下线时 Pump 不再接受写 binlog 的请求，等待所有的 binlog 数据被 Drainer 消费完；</li>
+<li>offline：已下线，当 Pump 已经将已保存的所有 binlog 数据全部发送给 Drainer 后，该 Pump 将状态切换为 offline；Drainer 只需要等待各个线程退出后即可切换状态为 offline。</li>
+</ul>
+<blockquote>
+<p><strong>注意：</strong></p>
+<ul>
+<li>当暂停 Pump/Drainer 时，数据同步会中断；</li>
+<li>Pump 在下线时需要确认自己的数据被所有的非 offline 状态的 Drainer 消费了，所以在下线 Pump 时需要确保所有的 Drainer 都是处于 online 状态，否则 Pump 无法正常下线；</li>
+<li>Pump 保存的 binlog 数据只有在被所有非 offline 状态的 Drainer 消费的情况下才会被 GC 处理；</li>
+<li>不要轻易下线 Drainer，只有在永久不需要使用该 Drainer 的情况下才需要下线 Drainer。</li>
+</ul>
+</blockquote>
+<p>关于 Pump/Drainer 暂停、下线、状态查询、状态修改等具体的操作方法，参考如下 binlogctl 工具的使用方法介绍。</p>
+<h3 id="binlogctl-工具">binlogctl 工具</h3>
+<p><a href="https://github.com/pingcap/tidb-tools/tree/master/tidb-binlog/binlogctl">binlogctl</a> 是一个 TiDB-Binlog 配套的运维工具，具有如下功能：</p>
+<ul>
+<li>获取当前 ts</li>
+<li>查看 Pump/Drainer 状态</li>
+<li>修改 Pump/Drainer 状态</li>
+<li>暂停/下线 Pump/Drainer</li>
+</ul>
+<p>使用 binlogctl 的场景：</p>
+<ul>
+<li>第一次运行 Drainer，需要获取当前的 ts</li>
+<li>Pump/Drainer 异常退出，状态没有更新，对业务造成影响，可以直接使用该工具修改状态</li>
+<li>同步出现故障/检查运行情况，需要查看 Pump/Drainer 的状态</li>
+<li>维护集群，需要暂停/下线 Pump/Drainer</li>
+</ul>
+<p>binlogctl 下载链接：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wget https://download.pingcap.org/binlogctl-new-linux-amd64.tar.gz
+wget https://download.pingcap.org/binlogctl-new-linux-amd64.sha256
+
+<span style="color:#75715e"># 检查文件完整性，返回 ok 则正确
+</span><span style="color:#75715e"></span>sha256sum -c tidb-binlog-new-linux-amd64.sha256</code></pre></div>
+<p>binlogctl 使用说明：</p>
+<p>命令行参数：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Usage of binlogctl:
+-V
+输出 binlogctl 的版本信息
+-cmd string
+    命令模式，包括 <span style="color:#e6db74">"generate_meta"</span>, <span style="color:#e6db74">"pumps"</span>, <span style="color:#e6db74">"drainers"</span>, <span style="color:#e6db74">"update-pump"</span> ,<span style="color:#e6db74">"update-drainer"</span>, <span style="color:#e6db74">"pause-pump"</span>, <span style="color:#e6db74">"pause-drainer"</span>, <span style="color:#e6db74">"offline-pump"</span>, <span style="color:#e6db74">"offline-drainer"</span>
+-data-dir string
+    保存 Drainer 的 checkpoint 的文件的路径 <span style="color:#f92672">(</span>默认 <span style="color:#e6db74">"binlog_position"</span><span style="color:#f92672">)</span>
+-node-id string
+    Pump/Drainer 的 ID
+-pd-urls string
+    PD 的地址，如果有多个，则用<span style="color:#e6db74">","</span> 连接 <span style="color:#f92672">(</span>默认 <span style="color:#e6db74">"http://127.0.0.1:2379"</span><span style="color:#f92672">)</span>
+-ssl-ca string
+    SSL CAs 文件的路径
+-ssl-cert string
+        PEM 格式的 X509 认证文件的路径
+-ssl-key string
+        PEM 格式的 X509 key 文件的路径
+-time-zone string
+    如果设置时区，在 <span style="color:#e6db74">"generate_meta"</span> 模式下会打印出获取到的 tso 对应的时间。例如<span style="color:#e6db74">"Asia/Shanghai"</span> 为 CST 时区，<span style="color:#e6db74">"Local"</span> 为本地时区</code></pre></div>
+<p>命令示例：</p>
+<ul>
+<li><p>查询所有的 Pump/Drainer 的状态：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bin/binlogctl -pd-urls<span style="color:#f92672">=</span>http://127.0.0.1:2379 -cmd pumps/drainers
+
+<span style="color:#ae81ff">2018</span>/06/21 <span style="color:#ae81ff">11</span>:24:10 nodes.go:53: <span style="color:#f92672">[</span>info<span style="color:#f92672">]</span> pump: &amp;<span style="color:#f92672">{</span>NodeID:ip-192-168-199-118:8250 Host:127.0.0.1:8250 IsAlive:true IsOffline:false LatestFilePos:<span style="color:#f92672">{</span>Suffix:0 Offset:15320<span style="color:#f92672">}</span> LatestKafkaPos:<span style="color:#f92672">{</span>Suffix:0 Offset:382<span style="color:#f92672">}</span> OfflineTS:0<span style="color:#f92672">}</span></code></pre></div></li>
+<li><p>修改 Pump/Drainer 的状态</p>
+<p>Pump/Drainer 的状态可以为：online，pausing，paused，closing 以及 offline。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bin/binlogctl -pd-urls<span style="color:#f92672">=</span>http://127.0.0.1:2379 -cmd update-pump/update-drainer -node-id ip-127-0-0-1:8250/<span style="color:#f92672">{</span>nodeID<span style="color:#f92672">}</span> -state <span style="color:#f92672">{</span>state<span style="color:#f92672">}</span></code></pre></div>
+<p>这条命令会修改 Pump/Drainer 保存在 pd 中的状态。</p></li>
+<li><p>暂停/下线 Pump/Drainer</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bin/binlogctl -pd-urls<span style="color:#f92672">=</span>http://127.0.0.1:2379 -cmd pause-pump/pause-drainer/offline-pump/offline-drainer -node-id ip-127-0-0-1:8250/<span style="color:#f92672">{</span>nodeID<span style="color:#f92672">}</span></code></pre></div>
+<p>binlogctl 会发送 HTTP 请求给 Pump/Drainer，Pump/Drainer 收到命令后会退出进程，并且将自己的状态设置为 paused/offline。</p></li>
+<li><p>生成 Drainer 启动需要的 meta 文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bin/binlogctl -pd-urls<span style="color:#f92672">=</span>http://127.0.0.1:2379 -cmd generate_meta
+
+INFO<span style="color:#f92672">[</span><span style="color:#ae81ff">0000</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span>pd<span style="color:#f92672">]</span> create pd client with endpoints <span style="color:#f92672">[</span>http://192.168.199.118:32379<span style="color:#f92672">]</span>
+INFO<span style="color:#f92672">[</span><span style="color:#ae81ff">0000</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span>pd<span style="color:#f92672">]</span> leader switches to: http://192.168.199.118:32379, previous:
+INFO<span style="color:#f92672">[</span><span style="color:#ae81ff">0000</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span>pd<span style="color:#f92672">]</span> init cluster id <span style="color:#ae81ff">6569368151110378289</span>
+<span style="color:#ae81ff">2018</span>/06/21 <span style="color:#ae81ff">11</span>:24:47 meta.go:117: <span style="color:#f92672">[</span>info<span style="color:#f92672">]</span> meta: &amp;<span style="color:#f92672">{</span>CommitTS:400962745252184065<span style="color:#f92672">}</span></code></pre></div>
+<p>该命令会生成一个文件 <code>{data-dir}/savepoint</code>， 该文件中保存了 Drainer 初次启动需要的 tso 信息。</p></li>
+</ul>
+<h2 id="tidb-binlog-监控">TiDB-Binlog 监控</h2>
+<p>使用 Ansible 部署成功后，可以进入 Grafana Web 界面（默认地址: <a href="http://grafana_ip:3000">http://grafana_ip:3000</a>，默认账号：admin，密码：admin）查看 Pump 和 Drainer 的运行状态。</p>
+<p>监控指标说明：<a href="/docs-cn/tools/tidb-binlog-monitor">TiDB-Binlog 监控指标说明</a></p>
+<h2 id="版本升级方法">版本升级方法</h2>
+<p>Cluster 版本的 TiDB-Binlog 不兼容 Kafka 版本以及 Local 版本，TiDB 如果升级到新版（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）后只能使用 Cluster 版本的 TiDB-Binlog；如果在升级前已经使用了 Kafka／Local 版本的 TiDB-Binlog，必须将其升级到 Cluster 版本。</p>
+<p>升级流程：</p>
+<ul>
+<li><p>如果能接受重新导全量数据，则可以直接废弃老版本，按本文档部署。</p></li>
+<li><p>如果想从原来的 checkpoint 继续同步，则使用以下升级流程：</p>
+<ol>
+<li>部署新版本 Pump；</li>
+<li>暂停 TiDB 集群业务；</li>
+<li>更新 TiDB 以及配置，写 Binlog 到新的 Pump Cluster；</li>
+<li>TiDB 集群重新接入业务；</li>
+<li><p>确认老版本的 Drainer 已经将老版本的 Pump 的数据完全同步到下游；</p>
+<p>查询 Drainer 的 <code>status</code> 接口，示例命令如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl <span style="color:#e6db74">'http://172.16.10.49:8249/status'</span>
+<span style="color:#f92672">{</span><span style="color:#e6db74">"PumpPos"</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">"172.16.10.49:8250"</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">"offset"</span>:32686<span style="color:#f92672">}}</span>,<span style="color:#e6db74">"Synced"</span>: true ,<span style="color:#e6db74">"DepositWindow"</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">"Upper"</span>:398907800202772481,<span style="color:#e6db74">"Lower"</span>:398907799455662081<span style="color:#f92672">}}</span></code></pre></div>
+<p>如果返回的 <code>Synced</code> 为 true，则可以认为 Binlog 数据已经全部同步到了下游。</p></li>
+<li><p>启动新版本 Drainer；</p></li>
+<li><p>下线无用的老版本的 Pump、Drainer 以及依赖的 Kafka 和 Zookeeper。</p></li>
+</ol></li>
+</ul>
+</div>
+<div class="article-toc"></div>
+<div class="git-info">
+<a class="link" href="https://github.com/pingcap/docs-cn/blob/master/tools/tidb-binlog-cluster.md">"TiDB-Binlog Cluster 版本用户文档"</a>
+                更新于
+                <span>Nov 29 2018</span>:
+                <a class="link" href="https://github.com/pingcap/docs-cn/commit/b20714d550591b46a8334973076284ed7ba63ed7">
+                    tools: fix format <span class="hash">(b20714d)</span>
+</a>
+</div></div>
+<div class="sidebar-page sticky-sidebar"><a class="improve-doc" href="https://github.com/pingcap/docs-cn/edit/master/tools/tidb-binlog-cluster.md" target="_blank">
+<svg fill="#142848" height="14" viewbox="0 0 275.836 275.836" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M191.344 20.922l-95.155 95.155a5.99 5.99 0 0 0-1.565 2.734l-8.167 31.454a6.003 6.003 0 0 0 7.315 7.316l31.454-8.168a6.003 6.003 0 0 0 2.734-1.565l95.153-95.153.005-.004.004-.005 19.156-19.156a5.998 5.998 0 0 0 .001-8.484L218.994 1.758a5.998 5.998 0 0 0-8.485 0l-19.155 19.155-.005.004-.005.005zm-70.713 117.286l-19.993 5.192 5.191-19.993 89.762-89.762 14.801 14.802-89.761 89.761zm94.12-123.723l14.801 14.802-10.675 10.675-14.801-14.802 10.675-10.675z"></path><path d="M238.037 65.022a6 6 0 0 0-6 6v192.813H43.799V34.417h111.063a6 6 0 0 0 0-12H37.799a6 6 0 0 0-6 6v241.419a6 6 0 0 0 6 6h200.238a6 6 0 0 0 6-6V71.022a6 6 0 0 0-6-6z"></path></svg>
+    修改本文
+</a>
+<p class="toc-title">本页导航</p>
+<div id="smart_toc_wrapper"></div>
+</div>
+</div>
+</div>
+<footer>
+<div class="container">
+<div class="flex-list-wrap">
+<div class="flex-list">
+<h4 class="list-title"><strong>产品</strong></h4>
+<ul>
+<li><a href="/docs-cn/">TiDB</a></li>
+<li><a href="/docs-cn/tispark/tispark-user-guide/">TiSpark</a></li>
+<li><a href="/docs-cn/ROADMAP/">TiDB 路线图</a></li>
+</ul>
+</div>
+<div class="flex-list">
+<h4 class="list-title"><strong>文档</strong></h4>
+<ul>
+<li><a href="/docs-cn/QUICKSTART/">快速入门</a></li>
+<li><a href="/blog-cn/tidb-best-practice/">最佳实践</a></li>
+<li><a href="/docs-cn/FAQ/">常见问题解答</a></li>
+<li><a href="/docs-cn/tools/syncer/">TiDB 周边工具</a></li>
+<li><a href="/docs-cn/releases/rn/">版本发布说明</a></li>
+</ul>
+</div>
+<div class="flex-list">
+<h4 class="list-title"><strong>资源</strong></h4>
+<ul>
+<li><a href="/blog-cn/">博客</a></li>
+<li><a href="https://github.com/pingcap" target="_blank">GitHub</a></li>
+<li><a href="https://zhuanlan.zhihu.com/newsql" target="_blank">知乎专栏</a></li>
+</ul>
+</div>
+<div class="flex-list">
+<h4 class="list-title"><strong>公司</strong></h4>
+<ul>
+<li><a href="/about-cn/">关于我们</a></li>
+<li><a href="/recruit-cn/join/">招贤纳士</a></li>
+<li><a href="/news-cn/">新闻报道</a></li>
+</ul>
+</div>
+</div>
+<div class="contact-list-wrap">
+<div class="flex-list">
+<h4 class="list-title"><strong>联系我们</strong></h4>
+<ul>
+<li><a class="twitter" href="https://twitter.com/PingCAP" target="_blank"><svg height="18" viewbox="0 0 612 612" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M612 116.258a250.714 250.714 0 0 1-72.088 19.772c25.929-15.527 45.777-40.155 55.184-69.411-24.322 14.379-51.169 24.82-79.775 30.48-22.907-24.437-55.49-39.658-91.63-39.658-69.334 0-125.551 56.217-125.551 125.513 0 9.828 1.109 19.427 3.251 28.606-104.326-5.24-196.835-55.223-258.75-131.174-10.823 18.51-16.98 40.078-16.98 63.101 0 43.559 22.181 81.993 55.835 104.479a125.556 125.556 0 0 1-56.867-15.756v1.568c0 60.806 43.291 111.554 100.693 123.104-10.517 2.83-21.607 4.398-33.08 4.398-8.107 0-15.947-.803-23.634-2.333 15.985 49.907 62.336 86.199 117.253 87.194-42.947 33.654-97.099 53.655-155.916 53.655-10.134 0-20.116-.612-29.944-1.721 55.567 35.681 121.536 56.485 192.438 56.485 230.948 0 357.188-191.291 357.188-357.188l-.421-16.253c24.666-17.593 46.005-39.697 62.794-64.861z"></path></svg> Twitter</a></li>
+<li><a class="linkedin" href="https://www.linkedin.com/company/pingcap/" target="_blank"><svg height="18" viewbox="0 0 438.536 438.535" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M5.424 145.895H99.64v282.932H5.424zM408.842 171.739c-19.791-21.604-45.967-32.408-78.512-32.408-11.991 0-22.891 1.475-32.695 4.427-9.801 2.95-18.079 7.089-24.838 12.419-6.755 5.33-12.135 10.278-16.129 14.844-3.798 4.337-7.512 9.389-11.136 15.104v-40.232h-93.935l.288 13.706c.193 9.139.288 37.307.288 84.508 0 47.205-.19 108.777-.572 184.722h93.931V270.942c0-9.705 1.041-17.412 3.139-23.127 4-9.712 10.037-17.843 18.131-24.407 8.093-6.572 18.13-9.855 30.125-9.855 16.364 0 28.407 5.662 36.117 16.987 7.707 11.324 11.561 26.98 11.561 46.966V428.82h93.931V266.664c-.007-41.688-9.897-73.328-29.694-94.925zM53.103 9.708c-15.796 0-28.595 4.619-38.4 13.848C4.899 32.787 0 44.441 0 58.529 0 72.42 4.758 84.034 14.275 93.358c9.514 9.325 22.078 13.99 37.685 13.99h.571c15.99 0 28.887-4.661 38.688-13.99 9.801-9.324 14.606-20.934 14.417-34.829-.19-14.087-5.047-25.742-14.561-34.973C81.562 14.323 68.9 9.708 53.103 9.708z"></path></svg> LinkedIn</a></li>
+<li><a class="reddit" href="https://www.reddit.com/r/TiDB/" target="_blank"><svg height="18" viewbox="0 0 279.748 279.748" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M279.748 133.142c0-19.299-15.701-35-35-35-10.768 0-20.674 4.812-27.279 13.064-18.532-8.431-39.663-13.626-62.015-15.271l19.206-60.692 42.895 9.294c3.285 12.782 14.901 22.258 28.693 22.258 16.336 0 29.627-13.29 29.627-29.626 0-16.336-13.291-29.627-29.627-29.627-11.801 0-21.999 6.941-26.759 16.95l-49.497-10.725a10.002 10.002 0 0 0-11.651 6.756L134.636 95.43c-26.164.638-50.988 6.053-72.356 15.775-6.606-8.251-16.512-13.063-27.28-13.063-19.299 0-35 15.701-35 35 0 9.373 3.683 18.173 10.222 24.709-3.9 8.37-5.875 17.076-5.875 25.936 0 24.048 14.396 46.492 40.538 63.199 25.447 16.264 59.183 25.221 94.989 25.221 35.808 0 69.542-8.957 94.989-25.221 26.142-16.707 40.538-39.151 40.538-63.199 0-8.859-1.975-17.565-5.875-25.936 6.539-6.537 10.222-15.336 10.222-24.709zM15.369 145.139c-2.212-3.59-3.369-7.688-3.369-11.997 0-12.682 10.317-23 23-23 5.444 0 10.558 1.851 14.649 5.258-14.622 8.302-26.132 18.289-34.28 29.739zm52.671 20.266c0-13.785 11.215-25 25-25s25 11.215 25 25-11.215 25-25 25-25-11.215-25-25zm123.119 57.054c-9.745 10.637-29.396 17.244-51.285 17.244-21.888 0-41.539-6.607-51.284-17.244a9.937 9.937 0 0 1-2.617-7.192 9.933 9.933 0 0 1 3.235-6.937 9.974 9.974 0 0 1 6.754-2.627c2.797 0 5.484 1.183 7.373 3.244 5.803 6.333 20.827 10.756 36.539 10.756s30.737-4.423 36.539-10.756a10.022 10.022 0 0 1 7.374-3.244c2.508 0 4.906.933 6.755 2.627a9.928 9.928 0 0 1 3.234 6.937 9.933 9.933 0 0 1-2.617 7.192zm-4.451-32.054c-13.785 0-25-11.215-25-25s11.215-25 25-25 25 11.215 25 25-11.215 25-25 25zm77.671-45.266c-8.147-11.45-19.657-21.436-34.28-29.739 4.092-3.408 9.205-5.258 14.649-5.258 12.683 0 23 10.318 23 23 0 4.309-1.157 8.407-3.369 11.997z"></path></svg> Reddit</a></li>
+<li><a class="google-plus" href="https://groups.google.com/forum/#!forum/tidb-user" target="_blank"><svg height="18" viewbox="0 0 491.858 491.858" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M377.472 224.957H201.319v58.718H308.79c-16.032 51.048-63.714 88.077-120.055 88.077-69.492 0-125.823-56.335-125.823-125.824 0-69.492 56.333-125.823 125.823-125.823 34.994 0 66.645 14.289 89.452 37.346l42.622-46.328c-34.04-33.355-80.65-53.929-132.074-53.929C84.5 57.193 0 141.693 0 245.928s84.5 188.737 188.736 188.737c91.307 0 171.248-64.844 188.737-150.989v-58.718l-.001-.001zM491.858 224.857h-36.031v-36.031h-30.886v36.031H388.91v30.883h36.031v36.032h30.886V255.74h36.031z"></path></svg> Google Group</a></li>
+<li><a class="stack-overflow" href="https://stackoverflow.com/questions/tagged/tidb" target="_blank"><svg height="18" viewbox="0 0 547.597 547.597" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M140.81 475.111h.024l189.91-.269c8.434-.013 15.3-6.886 15.3-15.318v-21.298c0-8.428-6.854-15.288-15.3-15.288l-189.91.264c-8.433.012-15.3 6.885-15.3 15.318v21.31c.001 8.427 6.855 15.281 15.276 15.281z"></path><path d="M58.667 517.854c.073 29.26.073 29.449 3.072 29.449h.055l10.612.294h.086s85.814 0 171.629-.036c42.914-.019 85.821-.05 118-.092 16.09-.019 29.505-.043 38.887-.074 17.803-.055 17.803-.055 17.803-3.072l.3-10.697V333.299c0-8.434-6.866-15.3-15.3-15.3h-11.909c-8.434 0-15.3 6.866-15.3 15.3V496.22c0 5.062-4.119 9.18-9.181 9.18H110.51c-5.061 0-9.18-4.118-9.18-9.18V333.299c0-8.434-6.867-15.3-15.3-15.3H73.82c-8.433 0-15.3 6.86-15.3 15.3 0 23.342.012 76.084.055 122.981.019 23.447.05 45.442.092 61.574z"></path><path d="M142.322 397.399l189.402 17.467c.478.043.948.062 1.413.062 7.956 0 14.468-5.985 15.159-13.917l1.83-21.096c.729-8.396-5.508-15.851-13.898-16.628l-189.102-17.461c-8.593-.795-15.869 5.441-16.653 13.825l-1.97 21.108a15.172 15.172 0 0 0 3.452 11.181 15.19 15.19 0 0 0 10.367 5.459zM437.636 208.849a15.253 15.253 0 0 0 17.694 12.443l21.065-3.678c8.311-1.451 13.898-9.395 12.454-17.706l-32.504-187.23c-1.42-8.207-9.21-13.917-17.692-12.448l-21.065 3.678c-8.311 1.451-13.898 9.395-12.454 17.705l32.502 187.236zM190.333 194.375l163.6 96.708a15.28 15.28 0 0 0 7.778 2.136c5.393 0 10.447-2.876 13.183-7.509l10.876-18.36c2.08-3.519 2.674-7.631 1.658-11.591a15.18 15.18 0 0 0-7.032-9.358l-163.6-96.714c-7.014-4.149-16.836-1.597-20.967 5.374l-10.869 18.36a15.2 15.2 0 0 0-1.658 11.591 15.21 15.21 0 0 0 7.031 9.363zM387.525 240.501a15.276 15.276 0 0 0 12.626 6.659c3.091 0 6.077-.924 8.635-2.681l17.405-11.934c6.953-4.768 8.752-14.314 4.015-21.292L323.29 54.104c-4.584-6.732-14.498-8.623-21.236-3.984l-17.737 12.21c-6.945 4.779-8.727 14.327-3.971 21.291l107.179 156.88zM154.482 302.319l183.465 49.156c1.298.349 2.632.526 3.966.526 6.903 0 12.98-4.67 14.762-11.347l5.508-20.624c2.179-8.152-2.681-16.555-10.826-18.74l-183.465-49.162c-8.017-2.148-16.604 2.852-18.728 10.826l-5.508 20.63c-2.179 8.142 2.68 16.551 10.826 18.735z"></path></svg> Stack Overflow</a></li>
+<li id="wechat"><a class="wechat" href="javascript:void(0)"><svg height="18" viewbox="0 0 31.403 31.404" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M31.403 21.306c0-4.597-4.388-8.32-9.8-8.32-5.414 0-9.802 3.725-9.802 8.32 0 4.597 4.388 8.322 9.802 8.322 1.701 0 3.302-.369 4.697-1.019l3.863 1.671-.447-4.309c1.066-1.329 1.687-2.937 1.687-4.665zm-13.102-2.254a1.395 1.395 0 1 1 0-2.79 1.395 1.395 0 0 1 0 2.79zm6.604 0a1.395 1.395 0 1 1 .003-2.79 1.395 1.395 0 0 1-.003 2.79z"></path><path d="M21.604 11.885c1.515 0 2.957.27 4.271.755.009-.175.03-.345.03-.521 0-6.074-5.801-10.996-12.953-10.996C5.799 1.123 0 6.044 0 12.119c0 2.284.822 4.408 2.229 6.167l-.591 5.694 5.104-2.213c1.264.59 2.661.986 4.136 1.189a8.143 8.143 0 0 1-.179-1.65c.001-5.195 4.892-9.421 10.905-9.421zm-4.287-6.428a1.84 1.84 0 1 1-1.841 1.84c0-1.016.825-1.84 1.841-1.84zM8.586 9.139a1.84 1.84 0 0 1 0-3.682 1.84 1.84 0 1 1 0 3.682z"></path></svg> 微信公众号</a> <div class="qr_code_outer f-hide f-tc">
+<div class="qr_code">
+<i id="close_qrcode"><svg viewbox="0 0 224.512 224.512" xmlns="http://www.w3.org/2000/svg"><path d="M224.507 6.997L217.521 0 112.256 105.258 6.998 0 .005 6.997l105.258 105.257L.005 217.512l6.993 7L112.256 119.24l105.265 105.272 6.986-7-105.258-105.258z" fill="#010002"></path></svg></i>
+<img class="qr_code_img" id="js_qr_code_img" src="/images/wechat-qrcode.jpg"/>
+<p>微信扫一扫<br/> 微信ID：pingcap2015</p>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="subscribe">
+<style media="screen" type="text/css">
+    #mc_embed_signup .response {
+        margin-top: 12px;
+        line-height: 1.4;
+        font-size: 0.65rem;
+    }
+</style>
+<div id="mc_embed_signup">
+<form action="//pingcap.us16.list-manage.com/subscribe/post?u=ab57beb8a88391cf6193c1b48&amp;id=7c67af4f9d" class="validate" id="mc-embedded-subscribe-form" method="post" name="mc-embedded-subscribe-form" novalidate="" target="_blank">
+<div id="mc_embed_signup_scroll">
+<div class="form-inline">
+<input class="form-control" id="mce-EMAIL" name="EMAIL" placeholder="Subscribe to our newsletter" type="email" value=""/>
+<input class="btn btn-subscribe f-tc" id="mc-embedded-subscribe" name="subscribe" type="submit" value="Subscribe"/>
+</div>
+<div class="clear" id="mce-responses">
+<div class="response" id="mce-error-response" style="display: none;"></div>
+<div class="response" id="mce-success-response" style="display: none;"></div>
+</div>
+<div aria-hidden="true" style="position: absolute; left: -5000px;">
+<input name="b_ab57beb8a88391cf6193c1b48_7c67af4f9d" tabindex="-1" type="text" value=""/>
+</div>
+</div>
+</form>
+</div>
+<script src="https://download.pingcap.com/js/mc-validate.js" type="text/javascript"></script>
+<script type="text/javascript">
+;(function($) {
+    window.fnames = new Array()
+    window.ftypes = new Array()
+    fnames[0] = 'EMAIL'
+    ftypes[0] = 'email'
+    fnames[1] = 'FNAME'
+    ftypes[1] = 'text'
+    fnames[2] = 'LNAME'
+    ftypes[2] = 'text'
+})(jQuery)
+var $mcj = jQuery.noConflict(true)
+</script>
+</div>
+</div>
+</div>
+<div class="container copyright-container">
+<p class="copyright">© 2018 北京平凯星辰科技发展有限公司</p>
+<a class="copyright-btn-lang" href="/docs/tools/tidb-binlog-cluster" id="lang">English</a>
+</div>
+</footer>
+<button class="back-to-top" type="button"><svg height="512" viewbox="0 0 284.929 284.929" width="512" xmlns="http://www.w3.org/2000/svg"><path d="M282.082 195.285L149.028 62.24c-1.901-1.903-4.088-2.856-6.562-2.856s-4.665.953-6.567 2.856L2.856 195.285C.95 197.191 0 199.378 0 201.853c0 2.474.953 4.664 2.856 6.566l14.272 14.271c1.903 1.903 4.093 2.854 6.567 2.854s4.664-.951 6.567-2.854l112.204-112.202 112.208 112.209c1.902 1.903 4.093 2.848 6.563 2.848 2.478 0 4.668-.951 6.57-2.848l14.274-14.277c1.902-1.902 2.847-4.093 2.847-6.566.001-2.476-.944-4.666-2.846-6.569z" fill="#FFF"></path></svg>
+</button>
+</div>
+<script type="text/javascript">document.getElementById("page-loader").style.display="none",document.getElementById("page-content").style.display="block"</script>
+<div class="overlay"></div>
+<script src="https://download.pingcap.com/js/jquery.min.js"></script><script src="/js/vendor/lazyload.min.js" type="text/javascript"></script>
+<script src="/js/doc.js" type="text/javascript"></script><script src="https://download.pingcap.com/js/docsearch.min.js" type="text/javascript"></script>
+<script src="/js/app.js" type="text/javascript"></script></body>
+</html>
